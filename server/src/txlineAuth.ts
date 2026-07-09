@@ -22,8 +22,6 @@ import {
   txlTokenMint,
 } from "./config.js";
 import { loadOrCreateKeypair, ensureFunds } from "./wallet.js";
-import idlDevnet from "../idl/txoracle-devnet.json";
-import idlMainnet from "../idl/txoracle-mainnet.json";
 
 export interface TxlineCredentials {
   jwt: string;
@@ -63,7 +61,9 @@ export function loadCachedCredentials(): TxlineCredentials | null {
 }
 
 function loadIdl(): anchor.Idl {
-  return (NETWORK === "mainnet" ? idlMainnet : idlDevnet) as unknown as anchor.Idl;
+  const file = NETWORK === "mainnet" ? "txoracle-mainnet.json" : "txoracle-devnet.json";
+  const idlPath = new URL(`../idl/${file}`, import.meta.url);
+  return JSON.parse(fs.readFileSync(idlPath, "utf8")) as anchor.Idl;
 }
 
 export async function subscribeAndActivate(): Promise<TxlineCredentials> {

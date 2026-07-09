@@ -20,19 +20,17 @@ client/  — React/Vite: o jogo Hi-Lo
 ## Rodando
 
 ```bash
-# 1. dependências
-cd server && npm install
-cd ../client && npm install
+# 1. dependências (raiz + server + client)
+npm install && npm run setup
 
-# 2. backend (porta 3001)
-cd ../server
-cp .env.example .env   # devnet por padrão
-npm run dev
+# 2. configuração do backend (devnet por padrão)
+cp server/.env.example server/.env
 
-# 3. frontend (porta 5173, com proxy para /api)
-cd ../client
+# 3. sobe tudo junto: server (porta 3001) + client (porta 5173, proxy para /api)
 npm run dev
 ```
+
+Também dá para subir separado com `npm run dev:server` e `npm run dev:client`.
 
 Abra http://localhost:5173.
 
