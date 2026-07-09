@@ -7,6 +7,7 @@ import {
   type StatCategory,
 } from "./types";
 import { LangToggle, useLang, type Dict } from "./i18n";
+import { celebrateCorrect, celebrateWin } from "./celebration";
 
 type Guess = "higher" | "lower";
 type Phase = "loading" | "error" | "playing" | "reveal" | "gameover" | "won";
@@ -43,6 +44,7 @@ export default function Game() {
     Number(localStorage.getItem("hilo-best") ?? 0)
   );
   const [copied, setCopied] = useState(false);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(
     () => localStorage.getItem("hilo-help") !== "off"
   );
@@ -119,6 +121,20 @@ export default function Game() {
         setBest(newStreak);
         localStorage.setItem("hilo-best", String(newStreak));
       }
+      if (!push) {
+        setSuccessMsg(
+          newStreak >= 10
+            ? t.game.streakMilestone(newStreak)
+            : t.game.successWords[
+                Math.floor(Math.random() * t.game.successWords.length)
+              ]
+        );
+        celebrateCorrect(newStreak);
+      } else {
+        setSuccessMsg(null);
+      }
+    } else {
+      setSuccessMsg(null);
     }
     setPhase("reveal");
   }
@@ -130,6 +146,7 @@ export default function Game() {
     }
     if (round + 2 >= matches.length) {
       setPhase("won");
+      celebrateWin();
       return;
     }
     setRound((r) => r + 1);
@@ -266,6 +283,16 @@ export default function Game() {
           t={t}
         />
       </div>
+
+      {phase === "reveal" && lastResult?.correct && !lastResult.push && successMsg && (
+        <div
+          className={`success-float ${streak >= 5 ? "gold" : ""}`}
+          key={round}
+          aria-hidden="true"
+        >
+          {successMsg}
+        </div>
+      )}
 
       {phase === "reveal" && (
         <button className="primary" onClick={nextRound}>

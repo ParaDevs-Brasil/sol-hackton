@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { LangToggle, useLang } from "./i18n";
+import { celebrateCorrect } from "./celebration";
 
 /* ---------- teaser jogável do hero ---------- */
 
@@ -23,7 +24,10 @@ function HeroTeaser() {
       dir === "higher" ? r.next.value > r.prev.value : r.next.value < r.prev.value;
     setRevealed(true);
     setResult(correct ? "ok" : "bad");
-    if (correct) setStreak((s) => s + 1);
+    if (correct) {
+      setStreak((s) => s + 1);
+      celebrateCorrect(streak + 1);
+    }
     timer.current = window.setTimeout(() => {
       if (!correct || round === rounds.length - 1) {
         setDone(true);
