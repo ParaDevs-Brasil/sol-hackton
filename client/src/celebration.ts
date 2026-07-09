@@ -8,7 +8,7 @@ import confetti from "canvas-confetti";
 const BRAND_COLORS = ["#00a24a", "#3ee8b5", "#ffcc00", "#f4f7fb"];
 const GOLD_COLORS = ["#ffcc00", "#ffe066", "#fff3bf", "#f59f00"];
 
-function reducedMotion() {
+export function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
@@ -65,9 +65,10 @@ function firework(colors: string[], scalar = 0.7) {
 
 /** Dispara a celebração de um acerto; a intensidade cresce com a streak. */
 export function celebrateCorrect(streak: number) {
-  if (reducedMotion()) return; // fica só o indicador de texto
+  if (prefersReducedMotion()) return; // fica só o indicador de texto
 
-  const tier = streak >= 10 ? 3 : streak >= 5 ? 2 : streak >= 3 ? 1 : 0;
+  const tier =
+    streak >= 15 ? 4 : streak >= 10 ? 3 : streak >= 5 ? 2 : streak >= 3 ? 1 : 0;
   const colors = streak >= 5 ? GOLD_COLORS : BRAND_COLORS;
 
   // rajada central: dois disparos com tamanhos de partícula diferentes
@@ -88,7 +89,7 @@ export function celebrateCorrect(streak: number) {
   emojiBurst(emojis, 4 + tier * 3, 60 + tier * 15);
 
   // fogos ao fundo, escalonados no tempo para não virar um flash único
-  const fireworks = [0, 2, 3, 4][tier];
+  const fireworks = [0, 2, 3, 4, 6][tier];
   for (let i = 0; i < fireworks; i++) {
     window.setTimeout(() => firework(colors, 0.6 + tier * 0.08), 160 + i * 240);
   }
@@ -96,7 +97,7 @@ export function celebrateCorrect(streak: number) {
 
 /** Celebração máxima — usada ao zerar o jogo. */
 export function celebrateWin() {
-  if (reducedMotion()) return;
+  if (prefersReducedMotion()) return;
 
   confetti({
     particleCount: 160,

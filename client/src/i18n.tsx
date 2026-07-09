@@ -355,20 +355,14 @@ const pt = {
     helpTitle: "💡 Como jogar",
     helpClose: "✕ fechar",
     helpCloseAria: "Fechar ajuda",
-    helpItems: [
-      <>
-        Veja a estatística da <strong>partida anterior</strong> (cartão da
-        esquerda).
-      </>,
-      <>
-        Palpite: a <strong>próxima partida</strong> terá um número{" "}
-        <strong>maior ⬆</strong> ou <strong>menor ⬇</strong>?
-      </>,
-      <>
-        Acertou, a sequência 🔥 cresce. Errou, fim de jogo. Empate mantém a
-        sequência.
-      </>,
-    ] as ReactNode[],
+    helpSteps: [
+      "Veja a última partida",
+      "Palpite MAIOR ou MENOR",
+      "Acompanhe a revelação",
+      "Aumente sua sequência",
+    ],
+    progressOf: (pct: number) => `${pct}% da campanha`,
+    newRecord: "🏆 Novo recorde!",
     categoryQuestion: (value: number, unit: string): ReactNode => (
       <>
         A próxima partida terá mais ou menos que <b className="mono">{value}</b>{" "}
@@ -401,6 +395,7 @@ const pt = {
     scoreline: (h: number, a: number) => `placar: ${h} × ${a}`,
     hiddenHint: "qual será o número?",
     successWords: [
+      "⚽ GOOOL!",
       "Acertou!",
       "Boa!",
       "Mandou bem!",
@@ -408,7 +403,8 @@ const pt = {
       "Sensacional!",
       "Monstro!",
     ],
-    streakMilestone: (n: number) => `🔥 ${n} seguidas!`,
+    streakMilestone: (n: number) =>
+      n >= 15 ? `⚡ IMPARÁVEL! ${n} seguidas!` : `🔥 ${n} seguidas!`,
     resultPush: "🤝 Deu igual!",
     resultPushNote: "Empate não conta ponto, mas a sequência continua.",
     resultOk: "✅ Acertou!",
@@ -790,19 +786,14 @@ const en: Dict = {
     helpTitle: "💡 How to play",
     helpClose: "✕ close",
     helpCloseAria: "Close help",
-    helpItems: [
-      <>
-        Check the stat from the <strong>previous match</strong> (left card).
-      </>,
-      <>
-        Guess: will the <strong>next match</strong> have a{" "}
-        <strong>higher ⬆</strong> or <strong>lower ⬇</strong> number?
-      </>,
-      <>
-        A correct guess grows the 🔥 streak. A wrong one ends the game. A tie
-        keeps the streak alive.
-      </>,
+    helpSteps: [
+      "Check the last match",
+      "Guess HIGHER or LOWER",
+      "Watch the reveal",
+      "Grow your streak",
     ],
+    progressOf: (pct) => `${pct}% of the campaign`,
+    newRecord: "🏆 New record!",
     categoryQuestion: (value, unit) => (
       <>
         Will the next match have more or less than{" "}
@@ -835,6 +826,7 @@ const en: Dict = {
     scoreline: (h, a) => `score: ${h} × ${a}`,
     hiddenHint: "what will the number be?",
     successWords: [
+      "⚽ GOAL!",
       "Correct!",
       "Nice!",
       "Great!",
@@ -842,7 +834,8 @@ const en: Dict = {
       "Awesome!",
       "Incredible!",
     ],
-    streakMilestone: (n: number) => `🔥 ${n}-streak!`,
+    streakMilestone: (n: number) =>
+      n >= 15 ? `⚡ UNSTOPPABLE! ${n}-streak!` : `🔥 ${n}-streak!`,
     resultPush: "🤝 It's a tie!",
     resultPushNote: "Ties don't score, but the streak continues.",
     resultOk: "✅ Correct!",
