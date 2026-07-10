@@ -53,6 +53,39 @@ const pt = {
     statCats: "categorias de stats",
     statPerRound: "por rodada",
     statSignups: "cadastros exigidos",
+    statFree: "grátis de verdade",
+    statChain: "verificação Solana",
+  },
+
+  arena: {
+    kicker: "// arena ao vivo",
+    h2pre: "O jogo no centro de",
+    h2accent: "tudo",
+    lead:
+      "Uma rodada de exemplo rolando no centro, dados reais dos lados. É assim que a arquibancada digital se parece.",
+    leftTitle: "📊 Últimos resultados",
+    catNow: "Categoria em destaque",
+    catNowValue: "🚩 Escanteios",
+    avgTime: "Tempo médio por rodada",
+    avgTimeValue: "< 5s",
+    totalMatches: "Partidas na campanha",
+    rightTitle: "🏆 Ranking",
+    preview: "preview",
+    rankRows: [
+      { name: "rafa.sol", streak: 12 },
+      { name: "copa_fan26", streak: 9 },
+      { name: "hilo_pro", streak: 7 },
+    ],
+    yourStreak: "🔥 Seu recorde",
+    yourStreakUnit: "acertos seguidos",
+    online: "Jogadores online",
+    liveFeed: "🟢 Agora na arena",
+    feedItems: [
+      "acertou 3 seguidas em Gols",
+      "bateu o recorde pessoal: 11",
+      "começou uma run nova",
+      "acertou MENOR em Escanteios",
+    ],
   },
 
   teaser: {
@@ -497,6 +530,39 @@ const en: Dict = {
     statCats: "stat categories",
     statPerRound: "per round",
     statSignups: "sign-ups required",
+    statFree: "actually free",
+    statChain: "Solana verification",
+  },
+
+  arena: {
+    kicker: "// live arena",
+    h2pre: "The game at the center of",
+    h2accent: "everything",
+    lead:
+      "An example round playing in the middle, real data on the sides. This is what the digital stands look like.",
+    leftTitle: "📊 Latest results",
+    catNow: "Featured category",
+    catNowValue: "🚩 Corners",
+    avgTime: "Average time per round",
+    avgTimeValue: "< 5s",
+    totalMatches: "Matches in the campaign",
+    rightTitle: "🏆 Leaderboard",
+    preview: "preview",
+    rankRows: [
+      { name: "rafa.sol", streak: 12 },
+      { name: "copa_fan26", streak: 9 },
+      { name: "hilo_pro", streak: 7 },
+    ],
+    yourStreak: "🔥 Your record",
+    yourStreakUnit: "correct in a row",
+    online: "Players online",
+    liveFeed: "🟢 Now in the arena",
+    feedItems: [
+      "got 3 in a row on Goals",
+      "beat their personal record: 11",
+      "started a fresh run",
+      "nailed LOWER on Corners",
+    ],
   },
 
   teaser: {

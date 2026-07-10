@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { useLang } from "./i18n";
 import { celebrateCorrect } from "./celebration";
 import Navbar from "./Navbar";
@@ -302,14 +302,137 @@ function useReveal() {
   }, []);
 }
 
+/* ---------- luz difusa que segue o mouse (desktop) ---------- */
+
+function useMouseGlow(ref: RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    let raf = 0;
+    const onMove = (e: PointerEvent) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        el.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      });
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+}
+
+/* ---------- painéis laterais da arena ---------- */
+
+function ArenaLeftPanel() {
+  const { t } = useLang();
+  return (
+    <aside className="side-panel">
+      <div className="panel-block">
+        <span className="panel-title">{t.arena.leftTitle}</span>
+        <ul className="panel-results">
+          {t.ticker.slice(0, 4).map((item) => (
+            <li key={item.match}>
+              <span className="panel-match">{item.match}</span>
+              <span className={`ticker-chip mono k-${item.kind}`}>
+                {item.stat}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="panel-block">
+        <span className="panel-label">{t.arena.catNow}</span>
+        <strong className="panel-value">{t.arena.catNowValue}</strong>
+      </div>
+      <div className="panel-block">
+        <span className="panel-label">{t.arena.avgTime}</span>
+        <strong className="panel-value mono">{t.arena.avgTimeValue}</strong>
+      </div>
+      <div className="panel-block">
+        <span className="panel-label">{t.arena.totalMatches}</span>
+        <strong className="panel-value mono">104</strong>
+      </div>
+    </aside>
+  );
+}
+
+/* contagem "ao vivo" que flutua de leve para dar sensação de movimento */
+function OnlineNow() {
+  const [n, setN] = useState(() => 1180 + Math.floor(Math.random() * 160));
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setN((v) => v + Math.floor(Math.random() * 35) - 15),
+      4000
+    );
+    return () => window.clearInterval(id);
+  }, []);
+  return <strong className="panel-value mono">{n.toLocaleString()}</strong>;
+}
+
+function ArenaRightPanel() {
+  const { t } = useLang();
+  const best = Number(localStorage.getItem("hilo-best") ?? 0);
+  return (
+    <aside className="side-panel">
+      <div className="panel-block">
+        <span className="panel-title">
+          {t.arena.rightTitle}
+          <small className="panel-chip mono">{t.arena.preview}</small>
+        </span>
+        <ol className="panel-rank">
+          {t.arena.rankRows.map((r, i) => (
+            <li key={r.name}>
+              <span className="rank-pos mono">{i + 1}</span>
+              <span className="rank-name">{r.name}</span>
+              <span className="rank-streak mono">🔥 {r.streak}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div className="panel-block">
+        <span className="panel-label">{t.arena.yourStreak}</span>
+        <strong className="panel-value mono">{best}</strong>
+        <span className="panel-sub">{t.arena.yourStreakUnit}</span>
+      </div>
+      <div className="panel-block">
+        <span className="panel-label">
+          <span className="live-dot" /> {t.arena.online}
+        </span>
+        <OnlineNow />
+      </div>
+      <div className="panel-block">
+        <span className="panel-label">{t.arena.liveFeed}</span>
+        <ul className="panel-feed">
+          {t.arena.feedItems.slice(0, 3).map((f, i) => (
+            <li key={i}>
+              <span className="rank-name mono">
+                {t.arena.rankRows[i % t.arena.rankRows.length].name}
+              </span>{" "}
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  );
+}
+
 /* ---------- página ---------- */
 
 export default function Landing() {
   const { t } = useLang();
   useReveal();
+  const glowRef = useRef<HTMLDivElement>(null);
+  useMouseGlow(glowRef);
 
   return (
     <div className="landing">
+      <div className="mouse-glow" ref={glowRef} aria-hidden="true" />
       <Navbar
         links={[
           { label: t.nav.home, href: "#/", active: true },
@@ -326,28 +449,60 @@ export default function Landing() {
 
       <section className="hero">
         <div className="hero-glow" aria-hidden="true" />
-        <span className="badge">
-          <span className="live-dot" /> {t.hero.badge}
-        </span>
-        <h1>
-          {t.hero.titlePre} <span className="accent">{t.hero.titleHigher}</span>{" "}
-          {t.hero.titleOr}{" "}
-          <span className="muted-strike">{t.hero.titleLower}</span>
-          {t.hero.titlePost}
-        </h1>
-        <p className="lead">{t.hero.lead}</p>
-        <div className="hero-actions">
-          <a className="btn primary big" href="#/jogar">
-            {t.hero.ctaPlay}
-          </a>
-          <a className="btn ghost big" href="#como-funciona">
-            {t.hero.ctaHow}
-          </a>
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <span className="badge">
+              <span className="live-dot" /> {t.hero.badge}
+            </span>
+            <h1>
+              {t.hero.titlePre}{" "}
+              <span className="accent">{t.hero.titleHigher}</span>{" "}
+              {t.hero.titleOr}{" "}
+              <span className="muted-strike">{t.hero.titleLower}</span>
+              {t.hero.titlePost}
+            </h1>
+            <p className="lead">{t.hero.lead}</p>
+            <div className="hero-actions">
+              <a className="btn primary big" href="#/jogar">
+                {t.hero.ctaPlay}
+              </a>
+              <a className="btn ghost big" href="#como-funciona">
+                {t.hero.ctaHow}
+              </a>
+            </div>
+            <div className="tech-badges hero-badges mono">
+              <span>Copa 2026</span>
+              <span>TxLINE</span>
+              <span>Solana devnet</span>
+            </div>
+          </div>
+
+          <div className="hero-stage">
+            <span className="spark s1" aria-hidden="true" />
+            <span className="spark s2" aria-hidden="true" />
+            <span className="spark s3" aria-hidden="true" />
+            <HeroTeaser />
+          </div>
         </div>
+      </section>
 
-        <HeroTeaser />
+      <section className="section reveal arena-section" id="arena">
+        <span className="section-kicker mono">{t.arena.kicker}</span>
+        <h2>
+          {t.arena.h2pre} <span className="accent">{t.arena.h2accent}</span>
+        </h2>
+        <p className="section-lead">{t.arena.lead}</p>
+        <div className="arena-grid">
+          <ArenaLeftPanel />
+          <div className="arena-center">
+            <AutoDemo />
+          </div>
+          <ArenaRightPanel />
+        </div>
+      </section>
 
-        <div className="stats-strip mono">
+      <section className="live-stats reveal" aria-label="stats">
+        <div className="live-stats-grid mono">
           <div>
             <CountUp to={104} />
             <span>{t.hero.statGames}</span>
@@ -364,21 +519,16 @@ export default function Landing() {
             <strong>0</strong>
             <span>{t.hero.statSignups}</span>
           </div>
+          <div>
+            <CountUp to={100} suffix="%" />
+            <span>{t.hero.statFree}</span>
+          </div>
+          <div>
+            <strong>on-chain</strong>
+            <span>{t.hero.statChain}</span>
+          </div>
         </div>
       </section>
-
-      <div className="ticker" aria-hidden="true">
-        <div className="ticker-track">
-          {[...t.ticker, ...t.ticker].map((item, i) => (
-            <span className="ticker-item" key={i}>
-              <span className="ticker-match">{item.match}</span>
-              <span className={`ticker-chip mono k-${item.kind}`}>
-                {item.stat}
-              </span>
-            </span>
-          ))}
-        </div>
-      </div>
 
       <section className="section reveal" id="como-funciona">
         <span className="section-kicker mono">{t.how.kicker}</span>
@@ -396,7 +546,6 @@ export default function Landing() {
             </article>
           ))}
         </div>
-        <AutoDemo />
       </section>
 
       <section className="section reveal">
@@ -557,6 +706,20 @@ export default function Landing() {
         </div>
         <div className="footer-note">{t.footer.note}</div>
       </footer>
+
+      {/* ticker fixo estilo ESPN: resultados rolando no rodapé da janela */}
+      <div className="ticker ticker-bar" aria-hidden="true">
+        <div className="ticker-track">
+          {[...t.ticker, ...t.ticker].map((item, i) => (
+            <span className="ticker-item" key={i}>
+              <span className="ticker-match">{item.match}</span>
+              <span className={`ticker-chip mono k-${item.kind}`}>
+                {item.stat}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
