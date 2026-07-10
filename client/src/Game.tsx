@@ -9,6 +9,7 @@ import {
 import { useLang, type Dict } from "./i18n";
 import Navbar from "./Navbar";
 import { teamFlag } from "./flags";
+import { recordGameEnd, recordGuess, syncLeagueScore } from "./profile";
 import {
   celebrateCorrect,
   celebrateWin,
@@ -150,6 +151,8 @@ export default function Game() {
   function finishReveal() {
     const p = pending.current;
     if (!p) return;
+    // gamificação: XP e estatísticas por categoria no perfil local
+    recordGuess(p.correct && !p.push, p.push, category, p.newStreak);
     setLastResult({ correct: p.correct, push: p.push });
     if (p.correct) {
       setStreak(p.newStreak);
@@ -208,10 +211,14 @@ export default function Game() {
 
   function nextRound() {
     if (!lastResult?.correct) {
+      recordGameEnd(streak);
+      syncLeagueScore(Math.max(streak, best));
       setPhase("gameover");
       return;
     }
     if (round + 2 >= matches.length) {
+      recordGameEnd(streak);
+      syncLeagueScore(Math.max(streak, best));
       setPhase("won");
       celebrateWin();
       playSfx("win");
@@ -272,8 +279,8 @@ export default function Game() {
         links={[
           { label: t.nav.home, href: "#/" },
           { label: t.nav.howToPlay, onClick: () => setShowHelp(true) },
-          { label: t.nav.ranking, soon: true },
-          { label: t.nav.history, soon: true },
+          { label: t.nav.leagues, href: "#/ligas" },
+          { label: t.nav.profile, href: "#/perfil" },
         ]}
         cta={{ label: t.game.playAgain, onClick: restart }}
       />

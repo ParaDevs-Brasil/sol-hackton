@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Game from "./Game";
 import Landing from "./Landing";
+import Leagues from "./Leagues";
+import Profile from "./Profile";
 
 export default function App() {
   const [route, setRoute] = useState(window.location.hash);
@@ -11,5 +13,8 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  return route === "#/jogar" ? <Game /> : <Landing />;
+  if (route === "#/jogar") return <Game />;
+  if (route === "#/ligas") return <Leagues />;
+  if (route === "#/perfil") return <Profile />;
+  return <Landing />;
 }
