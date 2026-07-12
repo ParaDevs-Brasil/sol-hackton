@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { DATA_DIR } from "./config.js";
-import { getCredentials } from "./txlineAuth.js";
+import { DATA_DIR } from "../config.js";
+import { getCredentials } from "../txline/auth.js";
 import {
   createClient,
   extractStats,
@@ -9,8 +9,8 @@ import {
   fetchScoresSnapshot,
   type Fixture,
   type MatchStats,
-} from "./txlineData.js";
-import { generateMockMatches } from "./mockData.js";
+} from "../txline/data.js";
+import { generateMockMatches } from "./mock.js";
 
 export interface GameMatch {
   fixtureId: number;
@@ -109,8 +109,14 @@ async function fetchFromTxline(): Promise<GameData> {
   };
 }
 
-export async function getGameData(): Promise<GameData> {
-  if (memoryCache && Date.now() - memoryCache.fetchedAt < CACHE_TTL_MS) {
+export interface GetGameDataOptions {
+  /** idade máxima aceita do cache — o hub real-time usa janelas curtas */
+  maxAgeMs?: number;
+}
+
+export async function getGameData(opts: GetGameDataOptions = {}): Promise<GameData> {
+  const maxAge = opts.maxAgeMs ?? CACHE_TTL_MS;
+  if (memoryCache && Date.now() - memoryCache.fetchedAt < maxAge) {
     return memoryCache;
   }
 

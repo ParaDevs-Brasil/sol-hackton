@@ -1,4 +1,4 @@
-import type { GameMatch } from "./gameService.js";
+import type { GameMatch } from "./matches.js";
 
 // Dataset simulado da Copa 2026 (104 jogos) usado quando a API TxLINE não está
 // disponível — mesmo formato do dado real, então o front não sabe a diferença.

@@ -3,15 +3,15 @@ import path from "node:path";
 import { BN } from "@coral-xyz/anchor";
 import { SystemProgram } from "@solana/web3.js";
 import { DATA_DIR } from "../config.js";
-import { getCredentials } from "../txlineAuth.js";
+import { getCredentials } from "../txline/auth.js";
 import {
   createClient,
   extractStats,
   fetchFixtures,
   fetchScoresSnapshot,
   type Fixture,
-} from "../txlineData.js";
-import { generateMockMatches } from "../mockData.js";
+} from "../txline/data.js";
+import { generateMockMatches } from "../games/mock.js";
 import { getChain, configPda, marketPda, vaultPda, marketStateLabel } from "./client.js";
 
 const STORE_PATH = path.join(DATA_DIR, "markets.json");

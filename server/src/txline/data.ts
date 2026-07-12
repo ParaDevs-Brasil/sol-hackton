@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
-import { apiOrigin } from "./config.js";
-import type { TxlineCredentials } from "./txlineAuth.js";
+import { apiOrigin } from "../config.js";
+import type { TxlineCredentials } from "./auth.js";
 
 export interface Fixture {
   Ts: number;

@@ -27,7 +27,7 @@ import {
   programId,
   rpcUrl,
   txlTokenMint,
-} from "./config.js";
+} from "../config.js";
 import { loadOrCreateKeypair, ensureFunds } from "./wallet.js";
 
 export interface TxlineCredentials {

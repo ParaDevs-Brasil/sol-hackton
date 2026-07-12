@@ -1,6 +1,6 @@
 // Executa manualmente o fluxo de assinatura free tier + ativação do token:
 //   npm run subscribe
-import { subscribeAndActivate } from "../txlineAuth.js";
+import { subscribeAndActivate } from "../txline/auth.js";
 
 subscribeAndActivate()
   .then((creds) => {

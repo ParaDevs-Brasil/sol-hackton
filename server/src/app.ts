@@ -1,0 +1,26 @@
+import cors from "cors";
+import express from "express";
+import { errorHandler, notFoundHandler } from "./http/errors.js";
+import { authRoutes } from "./http/routes/auth.routes.js";
+import { custodialRoutes } from "./http/routes/custodial.routes.js";
+import { gameRoutes } from "./http/routes/game.routes.js";
+import { marketsRoutes } from "./http/routes/markets.routes.js";
+import { runsRoutes } from "./http/routes/runs.routes.js";
+import { ticketsRoutes } from "./http/routes/tickets.routes.js";
+
+export function createApp(): express.Express {
+  const app = express();
+  app.use(cors());
+  app.use(express.json());
+
+  app.use("/api/game", gameRoutes);
+  app.use("/api/auth", authRoutes);
+  app.use("/api/custodial", custodialRoutes);
+  app.use("/api/markets", marketsRoutes);
+  app.use("/api/tickets", ticketsRoutes);
+  app.use("/api/runs", runsRoutes);
+
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+  return app;
+}

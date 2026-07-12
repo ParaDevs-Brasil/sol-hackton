@@ -4,7 +4,7 @@ import path from "node:path";
 import { BN } from "@coral-xyz/anchor";
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram } from "@solana/web3.js";
 import { DATA_DIR } from "../config.js";
-import { getGameData, type GameMatch } from "../gameService.js";
+import { getGameData, type GameMatch } from "../games/matches.js";
 import {
   BPS,
   configPda,

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Connection, Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { DATA_DIR, NETWORK, rpcUrl } from "./config.js";
+import { DATA_DIR, NETWORK, rpcUrl } from "../config.js";
 
 const WALLET_PATH = path.join(DATA_DIR, "wallet.json");
 
