@@ -106,6 +106,32 @@ export default function StakedHilo() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Retoma a run ativa se a página fechou no meio (o server é a fonte de
+  // verdade): awaiting_bet com janela aberta volta pra assinatura; playing
+  // volta direto pro jogo.
+  useEffect(() => {
+    if (!account.address) return;
+    let cancelled = false;
+    api(`/api/runs/wallet/${account.address}`)
+      .then(({ runs }: { runs: RunState[] }) => {
+        if (cancelled || !runs?.length) return;
+        const nowS = Math.floor(Date.now() / 1000);
+        const active = runs.find(
+          (r) =>
+            r.status === "playing" ||
+            (r.status === "awaiting_bet" && r.closeTs > nowS)
+        );
+        if (!active) return;
+        setRun(active);
+        setPhase(active.status === "playing" ? "playing" : "betting");
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account.address]);
+
   // countdown da janela de aposta
   useEffect(() => {
     if (phase !== "betting" && phase !== "signing") return;

@@ -177,11 +177,16 @@ export async function createRun(wallet: string, target: number, stakeLamports: n
     throw new Error("wallet inválida");
   }
   const s = loadStore();
+  // Bloqueia só runs que ainda podem andar: playing, ou awaiting_bet com a
+  // janela de aposta aberta. Uma awaiting_bet com janela vencida está morta
+  // (o mercado on-chain já fechou) — não pode segurar o jogador 30min.
+  const nowS = Math.floor(Date.now() / 1000);
   if (
     s.runs.some(
       (r) =>
         r.wallet === wallet &&
-        (r.status === "awaiting_bet" || r.status === "playing")
+        (r.status === "playing" ||
+          (r.status === "awaiting_bet" && nowS <= r.closeTs))
     )
   ) {
     throw new Error("você já tem uma run ativa — termine-a antes de abrir outra");
@@ -364,11 +369,26 @@ export async function settleRuns() {
 
   for (const run of s.runs) {
     const done = run.status === "won" || run.status === "lost";
+    // awaiting_bet: 2min de folga após o fechamento cobrem uma assinatura de
+    // última hora ainda confirmando; depois disso, ou a aposta chegou (vira
+    // playing) ou a run expira já — sem segurar o jogador por 30min.
+    const betWindowDead =
+      run.status === "awaiting_bet" && now > run.resolveAfterTs + 120;
     const abandoned =
-      (run.status === "awaiting_bet" || run.status === "playing") &&
-      now > run.resolveAfterTs + 30 * 60; // 30min sem terminar → derrota por W.O.
+      betWindowDead ||
+      (run.status === "playing" && now > run.resolveAfterTs + 30 * 60); // W.O.
     if (!done && !abandoned) continue;
     if (now < run.resolveAfterTs) continue;
+
+    if (betWindowDead) {
+      try {
+        // se o place_bet chegou on-chain, promove a playing em vez de expirar
+        await ensureBetPlaced(run);
+        continue;
+      } catch {
+        // sem aposta no vault: segue pra resolver e expirar
+      }
+    }
 
     const outcome = run.finalOutcome ?? RUN_OUTCOME_LOSE;
     const market = marketPda(new BN(run.marketId));
