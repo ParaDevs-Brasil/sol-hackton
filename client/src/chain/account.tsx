@@ -40,6 +40,8 @@ interface AccountCtx {
   busy: boolean;
   error: string | null;
   authConfig: AuthConfig;
+  /** API fora do ar — só o web3 connect (wallet) funciona */
+  apiOffline: boolean;
   /** saldo da wallet custodial em lamports (null = desconhecido) */
   custodialBalance: number | null;
   connectWallet(): Promise<void>;
@@ -82,11 +84,31 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [custodialBalance, setCustodialBalance] = useState<number | null>(null);
+  const [apiOffline, setApiOffline] = useState(false);
 
+  // sonda a API; se estiver fora, re-tenta até voltar (o web3 connect
+  // continua funcionando enquanto isso, direto na chain)
   useEffect(() => {
-    api("/api/auth/config")
-      .then(setAuthConfig)
-      .catch(() => {});
+    let cancelled = false;
+    let timer: number | undefined;
+    const probe = () => {
+      api("/api/auth/config")
+        .then((cfg) => {
+          if (cancelled) return;
+          setAuthConfig(cfg);
+          setApiOffline(false);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          setApiOffline(true);
+          timer = window.setTimeout(probe, 15_000);
+        });
+    };
+    probe();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, []);
 
   // valida a sessão persistida e busca o saldo custodial
@@ -195,6 +217,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         busy: busy || wallet.connecting,
         error: error ?? wallet.error,
         authConfig,
+        apiOffline,
         custodialBalance,
         connectWallet: wallet.connect,
         loginGoogle,
@@ -255,7 +278,11 @@ export function LoginPanel({ note }: { note?: string }) {
   const { t } = useLang();
   const account = useAccount();
   const wallet = useWallet();
-  const googleReady = account.authConfig.googleEnabled && Boolean(GOOGLE_CLIENT_ID);
+  // Google e convidado são contas custodiais assinadas pelo server — sem API
+  // não funcionam; o web3 connect fala direto com a chain e segue de pé.
+  const googleReady =
+    !account.apiOffline && account.authConfig.googleEnabled && Boolean(GOOGLE_CLIENT_ID);
+  const guestReady = !account.apiOffline && account.authConfig.guestEnabled;
 
   return (
     <div className="endgame login-panel">
@@ -268,14 +295,15 @@ export function LoginPanel({ note }: { note?: string }) {
 
         {googleReady && <GoogleButton onCredential={account.loginGoogle} />}
 
-        {account.authConfig.guestEnabled && (
+        {guestReady && (
           <button className="ghost-btn" disabled={account.busy} onClick={account.loginGuest}>
             {t.auth.asGuest}
           </button>
         )}
       </div>
 
-      {!googleReady && (
+      {account.apiOffline && <p className="dim login-hint">{t.auth.apiOfflineHint}</p>}
+      {!googleReady && !account.apiOffline && (
         <p className="dim login-hint">{t.auth.googleSetupHint}</p>
       )}
       {wallet.unavailable && <p className="dim login-hint">{t.auth.noWalletHint}</p>}
