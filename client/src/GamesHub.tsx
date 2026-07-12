@@ -6,13 +6,16 @@ interface GameEntry {
   id: keyof ReturnType<typeof useLang>["t"]["hub"]["games"];
   icon: string;
   href?: string;
+  /** segundo modo jogável (ex.: valendo SOL) */
+  hrefStaked?: string;
   /** fase do roadmap (docs/plano-minigames.md) — sem href = ainda não jogável */
   phase: number;
 }
 
 // Ordem do grid = ordem de entrega do plano: o jogável vem primeiro.
 const GAMES: GameEntry[] = [
-  { id: "hilo", icon: "🎯", href: "#/jogar", phase: 1 },
+  { id: "hilo", icon: "🎯", href: "#/jogar", hrefStaked: "#/hilo-apostado", phase: 1 },
+  { id: "markets1x2", icon: "🏟️", href: "#/mercados", phase: 2 },
   { id: "infiniteHilo", icon: "♾️", phase: 1 },
   { id: "guessStats", icon: "📊", phase: 2 },
   { id: "survivor", icon: "🛡️", phase: 3 },
@@ -61,9 +64,16 @@ export default function GamesHub() {
                 </div>
                 <p className="hub-desc">{info.desc}</p>
                 {playable ? (
-                  <a className="btn primary small" href={g.href}>
-                    {t.hub.play}
-                  </a>
+                  <div className="hub-actions">
+                    <a className="btn primary small" href={g.href}>
+                      {t.hub.play}
+                    </a>
+                    {g.hrefStaked && (
+                      <a className="btn small" href={g.hrefStaked}>
+                        {t.hub.playStaked}
+                      </a>
+                    )}
+                  </div>
                 ) : (
                   <span className="pending-chip">{t.hub.building}</span>
                 )}

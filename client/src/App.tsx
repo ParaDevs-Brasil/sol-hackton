@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Game from "./Game";
 import GamesHub from "./GamesHub";
 import Landing from "./Landing";
+import Markets from "./Markets";
+import StakedHilo from "./StakedHilo";
 import WalletPage from "./WalletPage";
 
 export default function App() {
@@ -18,6 +20,10 @@ export default function App() {
       return <Game />;
     case "#/jogos":
       return <GamesHub />;
+    case "#/hilo-apostado":
+      return <StakedHilo />;
+    case "#/mercados":
+      return <Markets />;
     case "#/carteira":
       return <WalletPage />;
     default:
