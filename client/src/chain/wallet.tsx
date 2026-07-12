@@ -46,6 +46,8 @@ interface WalletCtx {
   /** último erro de conexão, legível pro usuário */
   error: string | null;
   provider: InjectedProvider | null;
+  /** assina uma mensagem arbitrária (Sign-In With Solana) — nem toda wallet suporta */
+  signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | null;
   /** abre o modal do web3 connect */
   connect(): Promise<void>;
   disconnect(): Promise<void>;
@@ -61,6 +63,11 @@ const RPC_URL = "https://api.devnet.solana.com";
 interface RawInjected extends InjectedProvider {
   connect(opts?: { onlyIfTrusted?: boolean }): Promise<{ publicKey: PublicKey }>;
   disconnect?(): Promise<void>;
+  /** Phantom-like: retorna { signature } ou a assinatura direto */
+  signMessage?(
+    message: Uint8Array,
+    encoding?: string
+  ): Promise<Uint8Array | { signature: Uint8Array }>;
   isPhantom?: boolean;
   isMetaMask?: boolean;
   on?(event: string, cb: (...args: any[]) => void): void;
@@ -227,6 +234,18 @@ function Bridge({
 
   const activePk = adapter.publicKey ?? fallback?.publicKey ?? null;
 
+  const signMessage = useMemo(() => {
+    if (adapter.publicKey && adapter.signMessage) return adapter.signMessage;
+    const raw = fallback?.provider;
+    if (raw?.signMessage) {
+      return async (message: Uint8Array) => {
+        const result = await raw.signMessage!(message, "utf8");
+        return result instanceof Uint8Array ? result : result.signature;
+      };
+    }
+    return null;
+  }, [adapter.publicKey, adapter.signMessage, fallback]);
+
   return (
     <Ctx.Provider
       value={{
@@ -239,6 +258,7 @@ function Bridge({
         unavailable: !anyInstalled && !anyLoadable && !detectInjected(),
         error,
         provider,
+        signMessage,
         connect,
         disconnect,
       }}

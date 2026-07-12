@@ -22,7 +22,7 @@ const SESSION_KEY = "chainplay-session";
 interface SessionInfo {
   token: string;
   address: string;
-  provider: "google" | "guest";
+  provider: "google" | "guest" | "wallet";
   name: string | null;
   email: string | null;
 }
@@ -131,6 +131,39 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     setError(null);
   }
 
+  // Sign-In With Solana: quando a wallet conecta pelo web3 connect, cria uma
+  // sessão no backend assinando um nonce (uma assinatura, sessão de 7 dias).
+  // Melhor esforço: se a wallet não suporta signMessage ou o usuário recusar,
+  // o jogo on-chain segue funcionando só com a wallet conectada.
+  const siwsAttempted = useRef<string | null>(null);
+  useEffect(() => {
+    const address = wallet.address;
+    const sign = wallet.signMessage;
+    if (!address || !sign || apiOffline) return;
+    if (session?.provider === "wallet" && session.address === address) return;
+    if (siwsAttempted.current === address) return;
+    siwsAttempted.current = address;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const challenge = await api("/api/auth/wallet/nonce", { address });
+        const signature = await sign(new TextEncoder().encode(challenge.message));
+        const info = await api("/api/auth/wallet/verify", {
+          address,
+          signature: btoa(String.fromCharCode(...signature)),
+        });
+        if (!cancelled) adoptSession(info);
+      } catch {
+        // recusa do usuário ou API sem suporte — segue sem sessão de backend
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet.address, wallet.signMessage, apiOffline]);
+
   const loginGoogle = useCallback(async (credential: string) => {
     setBusy(true);
     setError(null);
@@ -156,6 +189,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
+    siwsAttempted.current = null;
     if (session) {
       api("/api/auth/logout", {}, session.token).catch(() => {});
       localStorage.removeItem(SESSION_KEY);
