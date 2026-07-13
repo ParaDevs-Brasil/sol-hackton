@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { LangToggle, useLang } from "./i18n";
+import { useLang } from "./i18n";
+import chainplayLogo from "./assets/chainplay-logo.png";
 
 export interface NavLink {
   label: string;
@@ -20,9 +21,11 @@ export interface NavCta {
 export default function Navbar({
   links,
   cta,
+  secondaryCta,
 }: {
   links: NavLink[];
   cta?: NavCta;
+  secondaryCta?: NavCta;
 }) {
   const { t } = useLang();
   const [open, setOpen] = useState(false);
@@ -70,6 +73,24 @@ export default function Navbar({
     );
   }
 
+  const secondaryEl = secondaryCta ? (
+    secondaryCta.href ? (
+      <a className="nav-secondary" href={secondaryCta.href}>
+        {secondaryCta.label}
+      </a>
+    ) : (
+      <button
+        className="nav-secondary nav-link-btn"
+        onClick={() => {
+          setOpen(false);
+          secondaryCta.onClick?.();
+        }}
+      >
+        {secondaryCta.label}
+      </button>
+    )
+  ) : null;
+
   const ctaEl = cta ? (
     cta.href ? (
       <a className="btn primary small" href={cta.href}>
@@ -90,14 +111,14 @@ export default function Navbar({
 
   return (
     <nav className="topbar">
-      <a className="logo" href="#/" aria-label="Hi-Lo">
-        Hi-<span className="accent">Lo</span>
+      <a className="logo" href="#/" aria-label="ChainPlay">
+        <img src={chainplayLogo} alt="ChainPlay" className="logo-img" />
       </a>
 
       <div className="topbar-links">{links.map(renderLink)}</div>
 
       <div className="topbar-actions">
-        <LangToggle />
+        {secondaryEl}
         {ctaEl}
         <button
           className={`nav-burger ${open ? "open" : ""}`}
@@ -113,6 +134,7 @@ export default function Navbar({
 
       <div className={`topbar-menu ${open ? "open" : ""}`}>
         {links.map(renderLink)}
+        {secondaryEl}
         {ctaEl}
       </div>
     </nav>

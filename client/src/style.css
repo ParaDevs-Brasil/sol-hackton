@@ -1,18 +1,20 @@
-/* Design system: tema escuro com fundo marinho #0B1D3A, texto claro,
-   brand verde #00A24A e acento amarelo #FFCC00. Inter para UI e
-   JetBrains Mono para números, cantos .5rem, pills e grade sutil de fundo */
+/* Design system ChainPlay: tema Midnight — fundo near-black #0B0B0D,
+   texto branco, brand lima #C6F04E, superfícies/bordas #1F1F1F.
+   Instrument Sans para títulos, Inter para UI e JetBrains Mono para
+   números; cantos .5rem, pills e grade sutil de fundo. */
 
 :root {
-  --bg: #0a0e16;
-  --surface: #0a0e16;
-  --surface-2: #0e1521;
-  --border: #263c60;
-  --text: #f4f7fb;
-  --text-2: #c4d0e0;
-  --muted: #8798b0;
-  --brand: #00a24a;
-  --brand-hover: #12b356;
-  --mint: #3ee8b5;
+  --bg: #0b0b0d;
+  --surface: #101013;
+  --surface-2: #1f1f1f;
+  --border: #1f1f1f;
+  --text: #ffffff;
+  --text-2: #d6d6d6;
+  --muted: #9a9a9a;
+  --brand: #c6f04e;
+  --brand-hover: #d4f66b;
+  --brand-ink: #0b0b0d;
+  --mint: #c6f04e;
   --amber: #ffcc00;
   --amber-ink: #ffcc00;
   --red: #ef4444;
@@ -27,33 +29,11 @@ body {
   margin: 0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg);
-  background-image:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 0),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.028) 1px, transparent 0);
-  background-size: 44px 44px;
   color: var(--text);
   min-height: 100vh;
 }
 
-/* atmosfera de estádio: refletores suaves que "respiram" atrás da grade */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(620px 320px at 12% -6%, rgba(0, 162, 74, 0.11), transparent 70%),
-    radial-gradient(720px 360px at 88% -2%, rgba(62, 232, 181, 0.07), transparent 70%),
-    radial-gradient(900px 480px at 50% 112%, rgba(0, 162, 74, 0.06), transparent 72%);
-  animation: stadium-breathe 9s ease-in-out infinite;
-}
-
-@keyframes stadium-breathe {
-  50% {
-    opacity: 0.6;
-  }
-}
+/* brilho de fundo removido a pedido — fundo fica limpo em near-black */
 
 .mono,
 .value,
@@ -348,7 +328,7 @@ button.lo:hover {
 button.primary {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: var(--brand-ink);
 }
 
 button.primary:hover {
@@ -434,13 +414,16 @@ footer a:hover {
 /* ---------- landing page ---------- */
 
 .landing {
-  max-width: 1600px;
+  max-width: 1360px;
   margin: 0 auto;
   /* padding inferior deixa folga para o ticker fixo do rodapé */
-  padding: 0 clamp(20px, 4vw, 56px) 96px;
+  padding: 0 clamp(24px, 6vw, 104px) 96px;
   display: flex;
   flex-direction: column;
   gap: clamp(72px, 8vw, 120px);
+  /* impede scroll horizontal quando o mascote extrapola a coluna;
+     clip (em vez de hidden) preserva a navbar sticky */
+  overflow-x: clip;
 }
 
 .topbar {
@@ -451,8 +434,9 @@ footer a:hover {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 14px 4px;
-  background: rgba(10, 14, 22, 0.85);
+  min-height: 84px;
+  padding: 10px 4px;
+  background: rgba(11, 11, 13, 0.85);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
 }
@@ -490,6 +474,13 @@ a.logo:hover {
   opacity: 0.8;
 }
 
+/* wordmark em imagem da marca ChainPlay */
+.logo-img {
+  display: block;
+  height: 64px;
+  width: auto;
+}
+
 .accent {
   color: var(--brand);
 }
@@ -521,7 +512,8 @@ a.logo:hover {
 .btn.primary {
   background: var(--brand);
   border-color: var(--brand);
-  color: #fff;
+  color: var(--brand-ink);
+  font-weight: 700;
 }
 
 .btn.primary:hover {
@@ -544,23 +536,18 @@ a.logo:hover {
 
 .hero {
   position: relative;
-  padding-top: 48px;
+  /* cancela a maior parte do gap flex do .landing para aproximar o
+     hero da navbar, deixando só um respiro curto no topo */
+  margin-top: calc(20px - clamp(72px, 8vw, 120px));
+  padding-top: 8px;
+  /* ocupa a primeira dobra: a próxima seção fica fora da tela */
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - 96px);
 }
 
-.hero-glow {
-  position: absolute;
-  top: -80px;
-  right: 4%;
-  width: 680px;
-  height: 480px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 162, 74, 0.2) 0%,
-    rgba(0, 162, 74, 0.06) 45%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: -1;
+.hero > .hero-grid {
+  width: 100%;
 }
 
 /* hero em duas colunas: copy à esquerda, jogo gigante à direita */
@@ -576,7 +563,7 @@ a.logo:hover {
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: 18px;
+  gap: 26px;
 }
 
 .hero h1 {
@@ -584,6 +571,37 @@ a.logo:hover {
   line-height: 1.06;
   margin: 0;
   animation: rise-in 0.6s ease both;
+}
+
+/* título principal do hero — Instrument Sans semibold, quebras controladas */
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  font-family: "Instrument Sans", Inter, sans-serif;
+  font-weight: 600;
+  font-size: clamp(2.3rem, 4.4vw, 3.9rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+  animation: rise-in 0.6s ease both;
+}
+
+.hero-title-line {
+  display: block;
+}
+
+.hero-title-line.accent {
+  color: var(--brand);
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 380px;
+  margin: 0;
+  animation: rise-in 0.6s 0.1s ease both;
 }
 
 .hero .lead {
@@ -642,7 +660,7 @@ a.logo:hover {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-preview {
@@ -861,15 +879,11 @@ a.logo:hover {
 }
 
 .landing-footer {
-  text-align: center;
-  font-size: 0.78rem;
-  color: var(--muted);
-  padding-bottom: 8px;
-}
-
-.landing-footer a {
-  color: var(--brand);
-  text-decoration: none;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: clamp(32px, 4vw, 56px) 0;
+  text-align: left;
 }
 
 /* ---------- teaser jogável do hero ---------- */
@@ -1348,54 +1362,101 @@ a.logo:hover {
 
 /* ---------- footer da landing ---------- */
 
-.footer-grid {
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 40px);
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
   text-align: left;
-  border-top: 1px solid var(--border);
-  padding-top: 32px;
 }
 
+/* coluna esquerda: logo + slogan + botões sociais */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.footer-logo .logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.footer-slogan {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.footer-slogan-1 {
+  color: var(--text);
+}
+
+.footer-slogan-2 {
+  color: var(--brand);
+}
+
+.footer-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* botão quadrado verde com ícone escuro (#131316) */
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--brand);
+  color: #131316;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.footer-social:hover {
+  background: var(--brand-hover);
+  transform: translateY(-1px);
+}
+
+.footer-social svg {
+  display: block;
+}
+
+/* colunas de links */
 .footer-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 14px;
 }
 
-.footer-col p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.6;
-  max-width: 320px;
-}
-
-.footer-col strong {
-  font-size: 0.72rem;
+.footer-heading {
+  font-size: 0.95rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-2);
+  color: var(--text);
+  margin-bottom: 2px;
 }
 
 .footer-col a {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
+  transition: color 0.15s ease;
 }
 
 .footer-col a:hover {
-  color: var(--text);
-}
-
-.footer-note {
-  margin-top: 28px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--brand);
+  text-decoration: none;
 }
 
 /* ---------- reveal on scroll ---------- */
@@ -1442,20 +1503,6 @@ a.logo:hover {
 
 .reveal.in :is(.grid-3, .pipeline, .roadmap, .not-grid) > :nth-child(6) {
   transition-delay: 0.4s;
-}
-
-.cta-final .btn.primary {
-  animation: cta-glow 2.6s ease-in-out infinite;
-}
-
-@keyframes cta-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(0, 162, 74, 0.45);
-  }
-  50% {
-    box-shadow: 0 0 0 12px rgba(0, 162, 74, 0);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1524,18 +1571,14 @@ a.logo:hover {
     display: none;
   }
 
-  .footer-grid {
+  .footer-inner {
     grid-template-columns: 1fr;
-    gap: 24px;
-    text-align: center;
+    gap: 36px;
+    text-align: left;
   }
 
   .footer-col {
-    align-items: center;
-  }
-
-  .footer-col p {
-    max-width: none;
+    align-items: flex-start;
   }
 }
 
@@ -1606,6 +1649,23 @@ a.logo:hover {
   gap: 14px;
 }
 
+/* ação secundária de texto (Signup) ao lado do CTA Play Now */
+.nav-secondary {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.nav-secondary:hover {
+  color: var(--text);
+  transform: none;
+}
+
 /* ---------- polish: acessibilidade, estados e elevação ---------- */
 
 html {
@@ -1632,15 +1692,6 @@ button:active:not(:disabled),
 .btn:active,
 .pill-btn:active:not(:disabled) {
   transform: translateY(0) scale(0.98);
-}
-
-/* CTA primário com presença: sombra colorida sutil */
-.btn.primary {
-  box-shadow: 0 6px 20px rgba(0, 162, 74, 0.28);
-}
-
-.btn.primary:hover {
-  box-shadow: 0 8px 26px rgba(0, 162, 74, 0.4);
 }
 
 /* elevação no hover dos cards, mantendo o movimento discreto */
@@ -2380,8 +2431,9 @@ button.lo:hover:not(:disabled) {
     display: flex;
   }
 
-  /* no mobile o CTA vive dentro do menu */
-  .topbar-actions > .btn {
+  /* no mobile o CTA e o Signup vivem dentro do menu */
+  .topbar-actions > .btn,
+  .topbar-actions > .nav-secondary {
     display: none;
   }
 
@@ -2416,24 +2468,295 @@ button.lo:hover:not(:disabled) {
   animation: rise-in 0.6s 0.3s ease both;
 }
 
-/* palco do card: glow próprio + partículas discretas */
+/* palco do card: composição do placeholder + mascote, sem brilho */
 .hero-stage {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(300px, 34vw, 440px);
   animation: rise-in 0.7s 0.15s ease both;
 }
 
-.hero-stage::before {
-  content: "";
+/* wrapper que dá o contexto de posicionamento: dimensiona-se pelo card,
+   permitindo ancorar o mascote à borda direita e sobrepô-lo por cima.
+   Deslocado um pouco à esquerda para equilibrar a composição. */
+.hero-figure {
+  position: relative;
+  display: inline-block;
+  transform: translateX(clamp(-72px, -5vw, -36px));
+}
+
+/* placeholder de imagem/GIF do hero — bloco claro temporário.
+   Preparado para receber o asset real (heroMedia) via <img> ou background-image. */
+.hero-media {
+  position: relative;
+  width: clamp(240px, 26vw, 500px);
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #e9e9e9 0%, #cfcfcf 100%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* quando o asset real chegar, basta trocar o bloco por esta imagem */
+.hero-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-media-hint {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  user-select: none;
+}
+
+/* mascote camaleão apoiado na borda direita do card */
+/* mascote sobreposto: maior que o card e centrado verticalmente na sua
+   metade direita — a cabeça sobe acima do topo e a cauda desce abaixo,
+   ficando por cima (z-index). */
+.hero-character {
   position: absolute;
-  inset: -48px -40px;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    60% 60% at 50% 45%,
-    rgba(0, 162, 74, 0.16),
-    transparent 72%
-  );
-  filter: blur(6px);
+  z-index: 2;
+  left: 38%;
+  top: 20%;
+  transform: translateY(-50%);
+  width: clamp(20px, 35vw, 600px);
+  height: auto;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.45));
+}
+
+/* ---------- seção 2: showcase de minigames ---------- */
+
+.showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-margin-top: 100px;
+}
+
+.showcase-title {
+  font-family: "Instrument Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0;
+}
+
+.showcase-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 440px;
+  margin: 0 0 clamp(20px, 3vw, 34px);
+}
+
+.showcase-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2vw, 28px);
+}
+
+/* placeholder de imagem/GIF — bloco claro temporário, preparado para
+   receber os assets reais (matchPreviewImage, predictionGameGif,
+   challengeCardImage) via <img> ou background-image. */
+.showcase-card {
+  aspect-ratio: 3 / 2;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #e9e9e9 0%, #cfcfcf 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.showcase-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.showcase-card-hint {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  user-select: none;
+}
+
+@media (max-width: 720px) {
+  .showcase-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- seção 3: vantagens do jogador ---------- */
+
+.advantages {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.5vw, 48px);
+  scroll-margin-top: 100px;
+}
+
+.advantages-title {
+  font-family: "Instrument Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0;
+  max-width: 16ch;
+}
+
+.advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 2.5vw, 40px);
+}
+
+/* bloco limpo, sem card pesado: número lima, título branco, texto suave */
+.advantage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.advantage-n {
+  font-family: "Instrument Sans", Inter, sans-serif;
+  font-size: clamp(1.9rem, 2.4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--brand);
+  margin-bottom: 4px;
+}
+
+.advantage-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  margin: 0;
+}
+
+.advantage-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  max-width: 30ch;
+}
+
+@media (max-width: 960px) {
+  .advantages-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 460px) {
+  .advantages-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- seção 4: comece em 3 passos (layout escalonado) ---------- */
+
+.get-started {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.5vw, 52px);
+  scroll-margin-top: 100px;
+}
+
+.get-started-title {
+  font-family: "Instrument Sans", Inter, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0;
+}
+
+.get-started-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 56px);
+}
+
+/* cada etapa: label acima + placeholder abaixo. Largura ~55% para permitir
+   o deslocamento lateral (esq / dir / esq) no desktop. */
+.get-started-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, 540px);
+}
+
+/* passo 2 empurrado para a direita */
+.get-started-step:nth-child(2) {
+  align-self: flex-end;
+}
+
+.get-started-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+/* placeholder de imagem/GIF — cinza claro, preparado para receber
+   stepWalletMedia / stepPredictionMedia / stepRewardsMedia via <img>. */
+.get-started-media {
+  aspect-ratio: 3 / 2;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #e9e9e9 0%, #cfcfcf 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.get-started-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.get-started-hint {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+  user-select: none;
+}
+
+/* mobile: empilhar tudo com alinhamento uniforme (largura cheia, sem offset) */
+@media (max-width: 720px) {
+  .get-started-step,
+  .get-started-step:nth-child(2) {
+    width: 100%;
+    align-self: stretch;
+  }
 }
 
 .hero-stage .hero-teaser {
@@ -2460,48 +2783,6 @@ button.lo:hover:not(:disabled) {
 .hero-stage .pill-btn {
   padding: 12px 26px;
   font-size: 0.95rem;
-}
-
-.spark {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--mint);
-  opacity: 0.4;
-  pointer-events: none;
-  animation: spark-float 7s ease-in-out infinite;
-}
-
-.spark.s1 {
-  top: -18px;
-  left: 12%;
-}
-
-.spark.s2 {
-  bottom: -12px;
-  right: 16%;
-  animation-delay: 2.3s;
-}
-
-.spark.s3 {
-  top: 42%;
-  right: -20px;
-  width: 3px;
-  height: 3px;
-  animation-delay: 4.1s;
-}
-
-@keyframes spark-float {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.18;
-  }
-  50% {
-    transform: translateY(-14px);
-    opacity: 0.55;
-  }
 }
 
 /* ---------- arena: jogo ao centro, dados dos lados ---------- */
@@ -2679,27 +2960,6 @@ button.lo:hover:not(:disabled) {
   font-size: 0.78rem;
 }
 
-/* ---------- luz difusa que segue o mouse ---------- */
-
-.mouse-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 520px;
-  height: 520px;
-  margin: -260px 0 0 -260px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 162, 74, 0.07),
-    transparent 65%
-  );
-  transition: transform 0.25s ease-out;
-  will-change: transform;
-}
-
 /* ---------- responsividade do layout wide ---------- */
 
 @media (max-width: 1200px) {
@@ -2727,6 +2987,18 @@ button.lo:hover:not(:disabled) {
   .hero-copy {
     align-items: center;
     text-align: center;
+  }
+
+  .hero-title {
+    align-items: center;
+  }
+
+  .hero-sub {
+    margin-inline: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
   }
 
   .hero-badges {
@@ -2771,13 +3043,10 @@ button.lo:hover:not(:disabled) {
 @media (prefers-reduced-motion: reduce) {
   .spark,
   .hero-stage,
+  .hero-character,
   .hero-badges,
   .live-stats-grid > div {
     animation: none;
     transition: none;
-  }
-
-  .mouse-glow {
-    display: none;
   }
 }
