@@ -15,10 +15,12 @@ const pt = {
   docTitle: "Hi-Lo · Copa 2026",
   nav: {
     how: "Como funciona",
+    minigames: "Minigames",
+    signup: "Signup",
     tech: "Tecnologia",
     vision: "Visão",
     faq: "FAQ",
-    play: "Jogar agora",
+    play: "Play Now",
     home: "Início",
     howToPlay: "Como jogar",
     ranking: "Ranking",
@@ -42,6 +44,14 @@ const pt = {
 
   hero: {
     badge: "Copa 2026 · dados ao vivo TxLINE · Solana",
+    heroLine1: "O jogo começa",
+    heroLine2: "no gramado.",
+    heroLine3: "a batalha",
+    heroLine4: "continua aqui.",
+    heroSub:
+      "Minigames, previsões e desafios conectados a partidas e estatísticas reais da Copa do Mundo.",
+    heroCtaStart: "Começar a jogar",
+    heroCtaExplore: "Explorar Minigames",
     titlePre: "A próxima partida vem",
     titleHigher: "MAIOR",
     titleOr: "ou",
@@ -55,6 +65,85 @@ const pt = {
     statCats: "categorias de stats",
     statPerRound: "por rodada",
     statSignups: "cadastros exigidos",
+    statFree: "grátis de verdade",
+    statChain: "verificação Solana",
+  },
+
+  showcase: {
+    title: "Cada partida. Um novo jeito de vencer.",
+    sub: "Pare de assistir. Comece a competir. A ChainPlay transforma partidas e estatísticas reais no seu próximo desafio.",
+    cards: [
+      { asset: "matchPreviewImage", label: "Prévia da partida" },
+      { asset: "predictionGameGif", label: "Jogo de previsão" },
+      { asset: "challengeCardImage", label: "Card de desafio" },
+    ],
+  },
+
+  advantages: {
+    title: "Feito para o jogador, não para a casa.",
+    items: [
+      {
+        n: "1",
+        title: "Justo por Design",
+        text: "Regras, taxas e prêmios ficam claros antes de você entrar.",
+      },
+      {
+        n: "2",
+        title: "Modos de Jogo Personalizados",
+        text: "Crie bolões, ligas e formatos com as suas próprias regras.",
+      },
+      {
+        n: "3",
+        title: "Sem Vantagem da Casa",
+        text: "Jogue contra o seu grupo, não contra a plataforma.",
+      },
+      {
+        n: "4",
+        title: "Social por Natureza",
+        text: "Convide amigos, desafie rivais e acompanhe a ação juntos.",
+      },
+    ],
+  },
+
+  getStarted: {
+    title: "Comece em 3 passos",
+    soon: "em breve",
+    steps: [
+      { label: "1. Conecte sua carteira" },
+      { label: "2. Faça seu palpite" },
+      { label: "3. Resgate suas recompensas" },
+    ],
+  },
+
+  arena: {
+    kicker: "// arena ao vivo",
+    h2pre: "O jogo no centro de",
+    h2accent: "tudo",
+    lead:
+      "Uma rodada de exemplo rolando no centro, dados reais dos lados. É assim que a arquibancada digital se parece.",
+    leftTitle: "📊 Últimos resultados",
+    catNow: "Categoria em destaque",
+    catNowValue: "🚩 Escanteios",
+    avgTime: "Tempo médio por rodada",
+    avgTimeValue: "< 5s",
+    totalMatches: "Partidas na campanha",
+    rightTitle: "🏆 Ranking",
+    preview: "preview",
+    rankRows: [
+      { name: "rafa.sol", streak: 12 },
+      { name: "copa_fan26", streak: 9 },
+      { name: "hilo_pro", streak: 7 },
+    ],
+    yourStreak: "🔥 Seu recorde",
+    yourStreakUnit: "acertos seguidos",
+    online: "Jogadores online",
+    liveFeed: "🟢 Agora na arena",
+    feedItems: [
+      "acertou 3 seguidas em Gols",
+      "bateu o recorde pessoal: 11",
+      "começou uma run nova",
+      "acertou MENOR em Escanteios",
+    ],
   },
 
   teaser: {
@@ -310,20 +399,16 @@ const pt = {
     lead: "O essencial antes de dar o primeiro palpite.",
     items: [
       {
-        q: "Precisa pagar ou cadastrar alguma coisa?",
-        a: "Não. O jogo é 100% gratuito, roda direto no navegador e não pede e-mail, carteira cripto nem instalação de app.",
+        q: "Do I need to deposit to start making predictions?",
+        a: "Yes. To place your predictions and earn real rewards, you must connect your crypto wallet (Solana) and have a balance available on the platform.",
       },
       {
-        q: "De onde vêm as estatísticas?",
-        a: "Do feed TxLINE (TxODDS), com acesso provado por transação on-chain na Solana. Qualquer pessoa pode auditar os dados — nada é inventado.",
+        q: "Where do the data and market results come from?",
+        a: "From the TxLINE (TxODDS) feed. All market resolutions are settled via on-chain transactions on the Solana blockchain, ensuring 100% public, auditable, and tamper-proof results.",
       },
       {
-        q: "O que acontece quando eu erro?",
-        a: "A run acaba na hora. Você pode compartilhar o placar em um toque e recomeçar — as categorias são sorteadas de novo a cada partida, então nenhuma run é igual à outra.",
-      },
-      {
-        q: "Isso é aposta?",
-        a: "Não. É um jogo de entretenimento sem dinheiro real, sem odds e sem prêmios em dinheiro. Só você, os dados e a sua sequência.",
+        q: "What happens if my prediction is incorrect?",
+        a: "If your prediction is wrong, the funds allocated to that position are lost. However, you can open new positions and join other active markets instantly.",
       },
     ],
   },
@@ -336,17 +421,19 @@ const pt = {
   },
 
   footer: {
-    blurb:
-      "Jogo de palpites com estatísticas reais da Copa 2026, dados TxLINE e verificação na Solana.",
-    product: "Produto",
-    play: "Jogar",
-    how: "Como funciona",
-    vision: "Visão",
-    faq: "FAQ",
-    techCol: "Tecnologia",
-    architecture: "Arquitetura",
-    github: "Código no GitHub",
-    note: "Hackathon TxODDS × Solana · Copa 2026 — jogo gratuito de entretenimento; não envolve apostas com dinheiro real.",
+    slogan1: "The game starts on the field.",
+    slogan2: "The battle continues here.",
+    resources: "Resources",
+    products: "Products",
+    terms: "Terms of Service",
+    privacy: "Privacy Policy",
+    responsible: "Responsible Gaming",
+    disclosures: "Disclosures",
+    brand: "Brand",
+    minigames: "Minigames",
+    howItWorks: "How It Works",
+    discord: "Discord",
+    x: "X",
   },
 
   game: {
@@ -875,10 +962,12 @@ const en: Dict = {
   docTitle: "Hi-Lo · World Cup 2026",
   nav: {
     how: "How it works",
+    minigames: "Minigames",
+    signup: "Signup",
     tech: "Technology",
     vision: "Vision",
     faq: "FAQ",
-    play: "Play now",
+    play: "Play Now",
     home: "Home",
     howToPlay: "How to play",
     ranking: "Leaderboard",
@@ -902,6 +991,14 @@ const en: Dict = {
 
   hero: {
     badge: "World Cup 2026 · live TxLINE data · Solana",
+    heroLine1: "The game starts on",
+    heroLine2: "the field.",
+    heroLine3: "the battle",
+    heroLine4: "continues here.",
+    heroSub:
+      "Minigames, predictions and challenges connected to real World Cup matches and stats.",
+    heroCtaStart: "Start Playing",
+    heroCtaExplore: "Explore Minigames",
     titlePre: "Will the next match go",
     titleHigher: "HIGHER",
     titleOr: "or",
@@ -915,6 +1012,85 @@ const en: Dict = {
     statCats: "stat categories",
     statPerRound: "per round",
     statSignups: "sign-ups required",
+    statFree: "actually free",
+    statChain: "Solana verification",
+  },
+
+  showcase: {
+    title: "Every match. A new way to win.",
+    sub: "Stop watching. Start competing. ChainPlay turns real matches and stats into your next challenge.",
+    cards: [
+      { asset: "matchPreviewImage", label: "Match preview" },
+      { asset: "predictionGameGif", label: "Prediction game" },
+      { asset: "challengeCardImage", label: "Challenge card" },
+    ],
+  },
+
+  advantages: {
+    title: "Built for players, not the house.",
+    items: [
+      {
+        n: "1",
+        title: "Fair by Design",
+        text: "Rules, fees, and rewards are clear before you join.",
+      },
+      {
+        n: "2",
+        title: "Custom Game Modes",
+        text: "Create pools, leagues, and formats with your own rules.",
+      },
+      {
+        n: "3",
+        title: "No House Edge",
+        text: "Play against your group, not against the platform.",
+      },
+      {
+        n: "4",
+        title: "Social by Nature",
+        text: "Invite friends, challenge rivals, and follow the action together.",
+      },
+    ],
+  },
+
+  getStarted: {
+    title: "Get started in 3 steps",
+    soon: "coming soon",
+    steps: [
+      { label: "1. Connect your wallet" },
+      { label: "2. Make your pick" },
+      { label: "3. Claim your rewards" },
+    ],
+  },
+
+  arena: {
+    kicker: "// live arena",
+    h2pre: "The game at the center of",
+    h2accent: "everything",
+    lead:
+      "An example round playing in the middle, real data on the sides. This is what the digital stands look like.",
+    leftTitle: "📊 Latest results",
+    catNow: "Featured category",
+    catNowValue: "🚩 Corners",
+    avgTime: "Average time per round",
+    avgTimeValue: "< 5s",
+    totalMatches: "Matches in the campaign",
+    rightTitle: "🏆 Leaderboard",
+    preview: "preview",
+    rankRows: [
+      { name: "rafa.sol", streak: 12 },
+      { name: "copa_fan26", streak: 9 },
+      { name: "hilo_pro", streak: 7 },
+    ],
+    yourStreak: "🔥 Your record",
+    yourStreakUnit: "correct in a row",
+    online: "Players online",
+    liveFeed: "🟢 Now in the arena",
+    feedItems: [
+      "got 3 in a row on Goals",
+      "beat their personal record: 11",
+      "started a fresh run",
+      "nailed LOWER on Corners",
+    ],
   },
 
   teaser: {
@@ -1171,20 +1347,16 @@ const en: Dict = {
     lead: "The essentials before your first guess.",
     items: [
       {
-        q: "Do I have to pay or sign up for anything?",
-        a: "No. The game is 100% free, runs right in the browser and asks for no e-mail, crypto wallet or app install.",
+        q: "Do I need to deposit to start making predictions?",
+        a: "Yes. To place your predictions and earn real rewards, you must connect your crypto wallet (Solana) and have a balance available on the platform.",
       },
       {
-        q: "Where do the stats come from?",
-        a: "From the TxLINE feed (TxODDS), with access proven by an on-chain transaction on Solana. Anyone can audit the data — nothing is made up.",
+        q: "Where do the data and market results come from?",
+        a: "From the TxLINE (TxODDS) feed. All market resolutions are settled via on-chain transactions on the Solana blockchain, ensuring 100% public, auditable, and tamper-proof results.",
       },
       {
-        q: "What happens when I miss?",
-        a: "The run ends right there. You can share your score in one tap and start over — categories are drawn again every run, so no two runs are the same.",
-      },
-      {
-        q: "Is this betting?",
-        a: "No. It's an entertainment game with no real money, no odds and no cash prizes. Just you, the data and your streak.",
+        q: "What happens if my prediction is incorrect?",
+        a: "If your prediction is wrong, the funds allocated to that position are lost. However, you can open new positions and join other active markets instantly.",
       },
     ],
   },
@@ -1197,17 +1369,19 @@ const en: Dict = {
   },
 
   footer: {
-    blurb:
-      "A guessing game built on real World Cup 2026 stats, TxLINE data and Solana verification.",
-    product: "Product",
-    play: "Play",
-    how: "How it works",
-    vision: "Vision",
-    faq: "FAQ",
-    techCol: "Technology",
-    architecture: "Architecture",
-    github: "Code on GitHub",
-    note: "TxODDS × Solana Hackathon · World Cup 2026 — free entertainment game; no real-money betting involved.",
+    slogan1: "The game starts on the field.",
+    slogan2: "The battle continues here.",
+    resources: "Resources",
+    products: "Products",
+    terms: "Terms of Service",
+    privacy: "Privacy Policy",
+    responsible: "Responsible Gaming",
+    disclosures: "Disclosures",
+    brand: "Brand",
+    minigames: "Minigames",
+    howItWorks: "How It Works",
+    discord: "Discord",
+    x: "X",
   },
 
   game: {
@@ -1745,9 +1919,8 @@ const LangContext = createContext<LangContextValue>({
 });
 
 function initialLang(): Lang {
-  const saved = localStorage.getItem("hilo-lang");
-  if (saved === "pt" || saved === "en") return saved;
-  return navigator.language?.toLowerCase().startsWith("pt") ? "pt" : "en";
+  // idioma fixado em inglês (seletor de idioma removido da UI)
+  return "en";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
