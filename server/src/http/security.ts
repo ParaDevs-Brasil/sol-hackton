@@ -7,15 +7,37 @@ import { HttpError } from "./errors.js";
  * headers de segurança, CORS com allowlist opcional e rate limit global leve.
  */
 
+// CSP do SPA em produção (o server serve o client/dist na mesma origem). Cobre
+// os recursos externos que o app usa: Google Fonts, Google Sign-In e o WebSocket
+// do RPC (confirmação de tx roda direto na chain — WS não passa pelo proxy).
+const APP_CSP = [
+  "default-src 'self'",
+  "script-src 'self' https://accounts.google.com https://gsi.gstatic.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  // /api/rpc é same-origin; o wsEndpoint aponta pro RPC público (devnet/mainnet)
+  "connect-src 'self' https://accounts.google.com https://api.devnet.solana.com wss://api.devnet.solana.com https://api.mainnet-beta.solana.com wss://api.mainnet-beta.solana.com",
+  "frame-src https://accounts.google.com", // botão do Google Sign-In
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
+// CSP trancado das rotas de dados: JSON e imagens não renderizam nada.
+const API_CSP = "default-src 'none'; img-src 'self' data:; frame-ancestors 'none'";
+
 /** Cabeçalhos de segurança aplicados a toda resposta. */
-export function securityHeaders(_req: Request, res: Response, next: NextFunction) {
+export function securityHeaders(req: Request, res: Response, next: NextFunction) {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("Referrer-Policy", "no-referrer");
   res.setHeader("X-DNS-Prefetch-Control", "off");
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  // API JSON + imagens públicas: nada de scripts/frames inline
-  res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' data:; frame-ancestors 'none'");
+  // rotas de dados ficam com o CSP estrito; o SPA (todo o resto) recebe o
+  // CSP que libera só o necessário pros recursos externos conhecidos
+  const isApi = req.path.startsWith("/api") || req.path.startsWith("/nft");
+  res.setHeader("Content-Security-Policy", isApi ? API_CSP : APP_CSP);
   next();
 }
 
