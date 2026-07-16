@@ -29,6 +29,7 @@ const pt = {
     wallet: "Carteira",
     soon: "em breve",
     menuAria: "Abrir menu de navegação",
+    backToGames: "Voltar aos jogos",
   },
 
   ticker: [
@@ -547,6 +548,12 @@ const pt = {
     playStaked: "💰 Valendo SOL",
     building: "em construção",
     phaseLabel: (n: number) => `fase ${n}`,
+    carouselTitle: "Escolha um Minigame",
+    carouselSub: "Previsões em tempo real",
+    mascotQuote: "Escolha um minigame e teste sua sorte. Bora?",
+    prevAria: "jogos anteriores",
+    nextAria: "próximos jogos",
+    liveTicker: "AO VIVO",
     games: {
       hilo: {
         name: "Hi-Lo",
@@ -1007,6 +1014,7 @@ const en: Dict = {
     wallet: "Wallet",
     soon: "soon",
     menuAria: "Open navigation menu",
+    backToGames: "Back to games",
   },
 
   ticker: [
@@ -1526,6 +1534,12 @@ const en: Dict = {
     playStaked: "💰 Stake SOL",
     building: "under construction",
     phaseLabel: (n: number) => `phase ${n}`,
+    carouselTitle: "Pick a Minigame",
+    carouselSub: "Real-time predictions",
+    mascotQuote: "Pick a minigame and test your luck. Let's go?",
+    prevAria: "previous games",
+    nextAria: "next games",
+    liveTicker: "LIVE",
     games: {
       hilo: {
         name: "Hi-Lo",
