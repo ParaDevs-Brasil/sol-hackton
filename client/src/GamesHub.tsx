@@ -24,7 +24,7 @@ const GAMES: GameEntry[] = [
   { id: "liveChallenge", icon: "⚡", art: "/imgs/game-live.jpg", href: "#/live", phase: 5 },
   { id: "guessTeam", icon: "🕵️", art: "/imgs/1fa81539-5fe0-447d-8671-13aaa0d8c75c.jpeg", href: "#/team", phase: 5 },
   { id: "survivor", icon: "🛡️", art: "/imgs/472effd8-6c3f-47b5-8515-f43fd2289a62.jpeg", href: "#/survivor", phase: 3 },
-  { id: "markets1x2", icon: "🏟️", href: "#/mercados", phase: 2 },
+  { id: "markets1x2", icon: "🏟️", art: "/imgs/1x2.png", href: "#/mercados", phase: 2 },
 ];
 
 export default function GamesHub() {
