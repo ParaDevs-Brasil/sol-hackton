@@ -10,8 +10,6 @@ import { celebrateCorrect, celebrateWin, prefersReducedMotion } from "./celebrat
 import { playSfx } from "./sfx";
 import { teamFlag } from "./flags";
 import { CATEGORY_ICONS, type StatCategory } from "./types";
-// arte do calango do Infinite Hi-Lo (asset público do Vite, servido da raiz)
-const mascotImg = "/games/infiniti-gilo.png";
 
 /* Fluxo da run apostada (house-backed):
    config → creating → betting (assina o place_bet) → playing → won|lost
@@ -309,24 +307,8 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
     .map(Number)
     .sort((a, b) => a - b);
 
-  /* humor do mascote derivado da fase — só apresentação */
-  const mascotMood: MascotMood =
-    phase === "won" || phase === "cashed"
-      ? "cheer"
-      : phase === "lost" || phase === "expired"
-      ? "sad"
-      : phase === "rolling"
-      ? "suspense"
-      : phase === "betting" || phase === "signing"
-      ? "point"
-      : phase === "playing" && lastReveal
-      ? lastReveal.correct
-        ? "cheer"
-        : "sad"
-      : "idle";
-
   return (
-    <div className="game-page">
+    <div className="game-page hilo-page">
       <BackBar
         action={
           accountCta ?? {
@@ -337,13 +319,19 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
       />
 
       <div className="shell">
+        {/* título do jogo sempre no topo, centrado */}
         <header className={`game-hero ${infinite ? "hilo-hero" : ""}`}>
           {infinite && (
             <span className="hilo-hero-badge">{t.hiloUi.heroBadge}</span>
           )}
-          <h1 className="game-question">
-            {infinite ? t.hiloUi.heroTitle : t.staked.title}
-          </h1>
+          {infinite ? (
+            <h1 className="hilo-display">
+              <span>{t.hiloUi.heroTitleA}</span>
+              <span className="accent">{t.hiloUi.heroTitleB}</span>
+            </h1>
+          ) : (
+            <h1 className="game-question">{t.staked.title}</h1>
+          )}
           <p className="game-sub">
             {infinite ? t.hiloUi.heroTag : t.staked.sub}
           </p>
@@ -353,22 +341,20 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
 
         {/* ---------------- escolha de meta e stake ---------------- */}
         {(phase === "config" || phase === "creating") && (
-          <section className="hilo-stage">
-            {/* escada em largura total: a progressão é a estrela do palco */}
+          <section className="hilo-setup-lite">
+            {/* escada solta no fundo: a progressão se lê num relance */}
             {infinite ? (
-              <div className="hilo-field hilo-ladder-field">
-                <h2 className="hilo-field-label">{t.infinite.ladderLabel}</h2>
+              <div className="hilo-field hilo-ladder-open">
+                <h2 className="hilo-field-label center">
+                  {t.infinite.ladderLabel}
+                </h2>
                 <LadderRail ladder={ladder} cap={ladderCap} streak={0} t={t} />
-                <p className="hilo-footnote">
-                  {t.infinite.capNote(
-                    ladderCap,
-                    (capBps / 10_000).toLocaleString()
-                  )}
-                </p>
               </div>
             ) : (
-              <div className="hilo-field hilo-ladder-field">
-                <h2 className="hilo-field-label">{t.staked.chooseTarget}</h2>
+              <div className="hilo-field hilo-ladder-open">
+                <h2 className="hilo-field-label center">
+                  {t.staked.chooseTarget}
+                </h2>
                 <div className="target-grid">
                   {targets.map((n) => (
                     <button
@@ -388,15 +374,8 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
               </div>
             )}
 
-            <div className="hilo-setup">
-            <div className="hilo-mascot-col">
-              <Mascot
-                mood="idle"
-                bubble={infinite ? t.hiloUi.bubbleConfig : t.hiloUi.bubbleTarget}
-                alt={t.hiloUi.mascotAlt}
-              />
-            </div>
-
+            {/* um único card: aposta → prêmio → começar */}
+            <div className="hilo-stage hilo-bet-card">
             <div className="hilo-panel">
               <div className="hilo-field">
                 <h2 className="hilo-field-label">{t.staked.stakeLabel}</h2>
@@ -473,27 +452,36 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
 
         {/* tutorial visual: o loop do jogo em 5 passos, sem parede de texto */}
         {(phase === "config" || phase === "creating") && infinite && (
-          <ol className="hilo-steps">
-            {t.hiloUi.steps.map((s, i) => (
-              <li key={i}>
-                <span className="hilo-step-n mono">{i + 1}</span>
-                {s}
-              </li>
-            ))}
-          </ol>
+          <>
+            <div className="hilo-howto-divider" role="separator">
+              <span>{t.nav.howToPlay}</span>
+            </div>
+            <ol className="hilo-steps hilo-steps-rich">
+              {t.hiloUi.steps.map((s, i) => (
+                <li key={i}>
+                  <span className="hilo-step-n mono">{i + 1}</span>
+                  <div>
+                    <strong>{s}</strong>
+                    <small>{t.hiloUi.stepDescs[i]}</small>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </>
         )}
 
-        {(phase === "config" || phase === "creating") && (
+        {/* no infinite os 5 passos acima já contam a história — o painel
+            detalhado fica só no modo com meta */}
+        {(phase === "config" || phase === "creating") && !infinite && (
           <HowTo
-            steps={infinite ? t.howto.infinite.steps : t.howto.staked.steps}
-            profit={infinite ? t.howto.infinite.profit : t.howto.staked.profit}
+            steps={t.howto.staked.steps}
+            profit={t.howto.staked.profit}
           />
         )}
 
         {/* ---------------- assinar a aposta ---------------- */}
         {(phase === "betting" || phase === "signing") && run && (
           <section className="hilo-stage hilo-final">
-            <Mascot mood="point" bubble={t.hiloUi.bubbleBetting} alt={t.hiloUi.mascotAlt} />
             <div className="hilo-final-body">
               {/* timeline da transação: onde o jogador está no fluxo on-chain */}
               <ol className="hilo-flow" aria-label={t.staked.betTitle}>
@@ -664,21 +652,6 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
                 t={t}
               />
 
-              {/* mascote assiste a run e reage aos acertos/erros */}
-              <div className="hilo-play-mascot" key={`m${run.streak}${phase}`}>
-                <Mascot
-                  mood={mascotMood}
-                  compact
-                  bubble={
-                    phase === "rolling"
-                      ? t.hiloUi.bubbleRolling
-                      : lastReveal
-                      ? undefined
-                      : t.hiloUi.bubblePlaying
-                  }
-                  alt={t.hiloUi.mascotAlt}
-                />
-              </div>
             </div>
 
             {/* progresso na escada: degraus subidos, atual e topo */}
@@ -715,7 +688,6 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
         {/* ---------------- vitória ---------------- */}
         {phase === "won" && run && (
           <section className="hilo-stage hilo-final is-win">
-            <Mascot mood="cheer" bubble={t.hiloUi.bubbleWin} alt={t.hiloUi.mascotAlt} />
             <div className="hilo-final-body">
               <h2>{infinite ? t.infinite.wonTitle : t.staked.wonTitle}</h2>
               <p>{settled ? "" : t.staked.wonSub(formatSol(run.payoutLamports))}</p>
@@ -748,7 +720,6 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
         {/* ---------------- cash-out da escada (infinite) ---------------- */}
         {phase === "cashed" && run && (
           <section className="hilo-stage hilo-final is-win">
-            <Mascot mood="cheer" bubble={t.hiloUi.bubbleCashed} alt={t.hiloUi.mascotAlt} />
             <div className="hilo-final-body">
               <h2>{t.infinite.cashedTitle}</h2>
               <p>{t.infinite.cashedSub(formatSol(run.cashedLamports ?? 0))}</p>
@@ -786,11 +757,6 @@ export default function StakedHilo({ mode = "target" }: { mode?: RunMode }) {
         {/* ---------------- derrota / expirada ---------------- */}
         {(phase === "lost" || phase === "expired") && (
           <section className="hilo-stage hilo-final is-loss">
-            <Mascot
-              mood="sad"
-              bubble={phase === "lost" ? t.hiloUi.bubbleLose : t.hiloUi.bubbleExpired}
-              alt={t.hiloUi.mascotAlt}
-            />
             <div className="hilo-final-body">
               <h2>{phase === "lost" ? t.staked.lostTitle : t.staked.expiredTitle}</h2>
               {/* mostra a carta que encerrou a run: palpite × valor real */}
@@ -873,30 +839,6 @@ function RunCard({
         <span className="pending-chip">{t.game.pendingPick}</span>
       )}
     </div>
-  );
-}
-
-/* ---------- apresentação: mascote e escada (sem lógica de jogo) ---------- */
-
-type MascotMood = "idle" | "cheer" | "sad" | "suspense" | "point";
-
-/** Calango reativo: mesma arte, humor via CSS (bob, pulo, tremida, tristeza). */
-function Mascot({
-  mood,
-  bubble,
-  alt,
-  compact = false,
-}: {
-  mood: MascotMood;
-  bubble?: string;
-  alt: string;
-  compact?: boolean;
-}) {
-  return (
-    <figure className={`hilo-mascot mood-${mood} ${compact ? "compact" : ""}`}>
-      {bubble && <figcaption className="mascot-bubble">{bubble}</figcaption>}
-      <img src={mascotImg} alt={alt} draggable={false} />
-    </figure>
   );
 }
 

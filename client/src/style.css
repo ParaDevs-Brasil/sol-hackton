@@ -4160,6 +4160,237 @@ a.game-card:hover {
   );
 }
 
+/* ---------- menu de conta no BackBar: endereço, saldo e sair ---------- */
+
+.acct-menu {
+  position: relative;
+}
+
+.acct-trigger {
+  white-space: nowrap;
+}
+
+.acct-caret {
+  font-size: 0.7em;
+  margin-left: 2px;
+}
+
+.acct-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 90;
+  min-width: 260px;
+  max-width: min(320px, calc(100vw - 24px));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+  text-align: left;
+  animation: acct-pop-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes acct-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+.acct-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.acct-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.acct-addr {
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-2);
+  word-break: break-all;
+}
+
+.acct-copy {
+  align-self: flex-start;
+  padding: 5px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+}
+
+.acct-copy:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.acct-balance {
+  font-size: 1.15rem;
+  color: var(--brand);
+}
+
+.acct-logout {
+  width: 100%;
+  padding: 9px 14px;
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 10px 10px;
+  margin: 2px -14px -14px;
+  width: calc(100% + 28px);
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  color: var(--muted);
+}
+
+.acct-logout:hover {
+  color: var(--red);
+  transform: none;
+  border-color: var(--border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acct-pop {
+    animation: none;
+  }
+}
+
+/* ---------- título display e escada aberta (setup enxuto) ---------- */
+
+.hilo-display {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.hilo-display .accent {
+  color: var(--brand);
+  text-shadow: 0 0 42px rgba(198, 240, 78, 0.35);
+}
+
+/* o setup enxuto ocupa a largura do shell, nunca o min-content da escada */
+.hilo-setup-lite {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* escada solta no fundo da página, sem card em volta */
+.hilo-ladder-open {
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+}
+
+.hilo-field-label.center {
+  text-align: center;
+}
+
+.hilo-ladder-open .ladder-rail {
+  width: 100%;
+}
+
+/* centraliza quando sobra espaço e ainda rola do início quando falta
+   (justify-content: center cortaria os degraus da esquerda no mobile) */
+.hilo-ladder-open .rail-rung:first-child {
+  margin-left: auto;
+}
+
+.hilo-ladder-open .rail-rung:last-child {
+  margin-right: auto;
+}
+
+/* card único da aposta: estreito e focado no CTA */
+.hilo-stage.hilo-bet-card {
+  max-width: 560px;
+}
+
+/* ---------- divisor + passos com descrição ---------- */
+
+.hilo-howto-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 1240px;
+  margin-top: 6px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hilo-howto-divider::before,
+.hilo-howto-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+ol.hilo-steps.hilo-steps-rich {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px 20px;
+  width: 100%;
+  max-width: 1240px;
+}
+
+.hilo-steps-rich li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 0;
+  font-size: inherit;
+  text-align: left;
+}
+
+.hilo-steps-rich li:not(:last-child)::after {
+  content: none;
+}
+
+.hilo-steps-rich li strong {
+  display: block;
+  font-size: 0.86rem;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.hilo-steps-rich li small {
+  display: block;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 /* hero do Infinite: badge, título grande e tagline de conversão */
 .hilo-hero {
   gap: 12px;
@@ -4200,27 +4431,6 @@ a.game-card:hover {
   max-width: 860px;
 }
 
-.hilo-steps li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 13px;
-  border: 1px solid var(--border);
-  border-radius: 9999px;
-  background: var(--surface);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-2);
-}
-
-.hilo-steps li:not(:last-child)::after {
-  content: "→";
-  margin-left: 6px;
-  margin-right: -4px;
-  color: var(--muted);
-  font-weight: 400;
-}
-
 .hilo-step-n {
   display: inline-flex;
   align-items: center;
@@ -4253,15 +4463,17 @@ a.game-card:hover {
   text-align: left;
 }
 
+/* glow contido no card (inset negativo entraria no scrollWidth no mobile) */
 .hilo-stage::before {
   content: "";
   position: absolute;
-  inset: -40px;
+  inset: 0;
   z-index: -1;
+  border-radius: inherit;
   pointer-events: none;
   background: radial-gradient(
-    50% 60% at 50% 40%,
-    rgba(198, 240, 78, 0.06),
+    80% 90% at 50% 0%,
+    rgba(198, 240, 78, 0.05),
     transparent 75%
   );
 }
@@ -4271,20 +4483,6 @@ a.game-card:hover {
   padding-bottom: 18px;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--border);
-}
-
-/* setup: mascote apresenta, painel decide */
-.hilo-setup {
-  display: grid;
-  grid-template-columns: 236px minmax(0, 1fr);
-  gap: 30px;
-  align-items: center;
-}
-
-.hilo-mascot-col {
-  display: flex;
-  justify-content: center;
-  align-self: center;
 }
 
 .hilo-panel {
@@ -4368,106 +4566,6 @@ a.game-card:hover {
 .hilo-panel .betting-as,
 .hilo-panel .devnet-note {
   margin: 0;
-}
-
-/* ---------- mascote: mesma arte, humor via CSS ---------- */
-
-.hilo-mascot {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-.hilo-mascot img {
-  width: 200px;
-  max-width: 100%;
-  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.5));
-  animation: mascot-bob 3.2s ease-in-out infinite;
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-/* no setup o calango se inclina de leve pro painel, guiando o olhar
-   (propriedade `rotate` compõe com o translateY da animação de bob) */
-.hilo-setup .hilo-mascot img {
-  rotate: 2deg;
-}
-
-.hilo-mascot.compact img {
-  width: 88px;
-}
-
-.hilo-mascot.mood-cheer img {
-  animation: mascot-cheer 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hilo-mascot.mood-sad img {
-  animation: none;
-  filter: grayscale(0.55) brightness(0.85) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
-  transform: rotate(-5deg) translateY(4px);
-}
-
-.hilo-mascot.mood-suspense img {
-  animation: mascot-shiver 0.4s linear infinite;
-}
-
-.mascot-bubble {
-  position: relative;
-  max-width: 250px;
-  padding: 10px 14px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 0.86rem;
-  font-weight: 600;
-  line-height: 1.45;
-  color: var(--text-2);
-  text-align: center;
-}
-
-/* rabinho do balão apontando pro calango */
-.mascot-bubble::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  width: 10px;
-  height: 10px;
-  transform: translateX(-50%) rotate(45deg);
-  background: var(--surface-2);
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-@keyframes mascot-bob {
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
-@keyframes mascot-cheer {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  35% {
-    transform: translateY(-20px) scale(1.06) rotate(3deg);
-  }
-  70% {
-    transform: translateY(0) scale(0.97);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes mascot-shiver {
-  25% {
-    transform: translateX(-2px) rotate(-1deg);
-  }
-  75% {
-    transform: translateX(2px) rotate(1deg);
-  }
 }
 
 /* ---------- escada de prêmio: trilho horizontal com progresso ---------- */
@@ -4706,14 +4804,6 @@ a.game-card:hover {
   font-size: 0.8rem;
 }
 
-/* mascote assistindo a run, embaixo dos botões de palpite */
-.hilo-play-mascot {
-  grid-column: 2;
-  display: flex;
-  justify-content: center;
-  margin-top: -4px;
-}
-
 /* timeline do fluxo on-chain: feito → agora → próximo */
 .hilo-flow {
   display: flex;
@@ -4827,15 +4917,11 @@ a.game-card:hover {
 /* ---------- telas finais: vitória, saque, derrota ---------- */
 
 .hilo-final {
-  display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  gap: 26px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  max-width: 640px;
-}
-
-.hilo-final .hilo-mascot img {
-  width: 150px;
+  text-align: center;
+  max-width: 560px;
 }
 
 .hilo-final-body h2 {
@@ -4849,7 +4935,7 @@ a.game-card:hover {
 }
 
 .hilo-final-body .endgame-actions {
-  justify-content: flex-start;
+  justify-content: center;
   margin-top: 14px;
 }
 
@@ -4897,47 +4983,9 @@ a.game-card:hover {
 
 /* ---------- responsivo ---------- */
 
-@media (max-width: 860px) {
-  .hilo-setup {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .hilo-mascot-col {
-    align-self: center;
-  }
-
-  .hilo-setup .hilo-mascot img {
-    width: 130px;
-  }
-
-  .hilo-panel .stake-row {
-    justify-content: center;
-  }
-}
-
 @media (max-width: 640px) {
   .hilo-stage {
     padding: 20px 16px;
-  }
-
-  .hilo-final {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .hilo-final .hilo-mascot img {
-    width: 110px;
-  }
-
-  .hilo-final-body .endgame-actions {
-    justify-content: center;
-  }
-
-  /* no mobile .cards vira coluna única: o mascote entra no fluxo */
-  .hilo-play-mascot {
-    grid-column: auto;
-    order: 4;
   }
 
   .hilo-hud > div {
@@ -4950,9 +4998,6 @@ a.game-card:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hilo-mascot img,
-  .hilo-mascot.mood-cheer img,
-  .hilo-mascot.mood-suspense img,
   .rail-rung.next,
   .rail-rung.current,
   .hilo-flow .is-now::before {
