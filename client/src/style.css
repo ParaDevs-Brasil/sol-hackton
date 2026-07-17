@@ -2596,14 +2596,13 @@ button.lo:hover:not(:disabled) {
   transform: translateX(clamp(-72px, -5vw, -36px));
 }
 
-/* placeholder de imagem/GIF do hero — bloco claro temporário.
-   Preparado para receber o asset real (heroMedia) via <img> ou background-image. */
+/* card do hero: moldura do vídeo de demonstração do minigame */
 .hero-media {
   position: relative;
   width: clamp(240px, 26vw, 500px);
   aspect-ratio: 16 / 10;
   border-radius: 12px;
-  background: linear-gradient(180deg, #e9e9e9 0%, #cfcfcf 100%);
+  background: #0b0b0d;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -2611,21 +2610,12 @@ button.lo:hover:not(:disabled) {
   overflow: hidden;
 }
 
-/* quando o asset real chegar, basta trocar o bloco por esta imagem */
-.hero-media-img {
+.hero-media-img,
+.hero-media-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.hero-media-hint {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #7a7a7a;
-  user-select: none;
 }
 
 /* mascote camaleão apoiado na borda direita do card */

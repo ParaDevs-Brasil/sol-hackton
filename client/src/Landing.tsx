@@ -452,16 +452,19 @@ export default function Landing() {
 
           <div className="hero-stage">
             <div className="hero-figure">
-              {/* heroMedia: placeholder temporário para imagem/GIF em produção.
-                  Para usar o asset real, troque este bloco por
-                  <img className="hero-media-img" src={heroMedia} alt="..." />
-                  ou defina background-image em .hero-media. */}
               <div
                 className="hero-media"
                 role="img"
-                aria-label="Prévia do minigame (em breve)"
+                aria-label="Prévia do minigame"
               >
-                <span className="hero-media-hint mono">GIF / imagem em breve</span>
+                <video
+                  className="hero-media-video"
+                  src="/videos/videodemo.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
               </div>
 
               {/* heroCharacter: mascote camaleão sobreposto à borda do card */}
