@@ -609,19 +609,17 @@ const pt = {
 
   auth: {
     title: "Entre para jogar valendo SOL",
-    withWallet: "🔗 Conectar wallet",
+    withWallet: "Conectar wallet",
     logout: "sair",
     addressLabel: "Wallet address",
     copy: "Copy",
     copied: "✓ Copied",
     menuAria: "Open account menu",
     working: "Entrando…",
-    googleSetupHint:
-      "Login com Google: defina GOOGLE_CLIENT_ID no server/.env e VITE_GOOGLE_CLIENT_ID no client/.env (OAuth Client ID do Google Cloud, origem http://localhost:5173).",
     noWalletHint:
-      "Sem extensão de wallet? Entre com o Google — criamos uma conta custodial de devnet pra você.",
+      "Sem extensão de wallet? Instale uma wallet Solana (ex.: Phantom) pra conectar.",
     apiOfflineHint:
-      "API fora do ar — login social indisponível. Conecte sua wallet (web3 connect): as apostas vão direto pra chain. Pra reativar tudo, suba o server: cd server && npm run dev.",
+      "Conecte sua wallet: as apostas vão direto pra chain.",
     custodialBadge: (name: string) => `conta custodial · ${name}`,
     custodialBalance: (sol: string) => `saldo: ${sol}`,
     custodialFund: (addr: string) =>
@@ -1697,19 +1695,17 @@ const en: Dict = {
 
   auth: {
     title: "Sign in to play for SOL",
-    withWallet: "🔗 Connect wallet",
+    withWallet: "Connect wallet",
     logout: "logout",
     addressLabel: "Wallet address",
     copy: "Copy",
     copied: "✓ Copied",
     menuAria: "Open account menu",
     working: "Signing in…",
-    googleSetupHint:
-      "Google login: set GOOGLE_CLIENT_ID in server/.env and VITE_GOOGLE_CLIENT_ID in client/.env (Google Cloud OAuth Client ID, origin http://localhost:5173).",
     noWalletHint:
-      "No wallet extension? Sign in with Google — we create a devnet custodial account for you.",
+      "No wallet extension? Install a Solana wallet (e.g. Phantom) to connect.",
     apiOfflineHint:
-      "API is down — social login unavailable. Connect your wallet (web3 connect): bets go straight on-chain. To restore everything, start the server: cd server && npm run dev.",
+      "Connect your wallet: bets go straight on-chain.",
     custodialBadge: (name: string) => `custodial account · ${name}`,
     custodialBalance: (sol: string) => `balance: ${sol}`,
     custodialFund: (addr: string) =>

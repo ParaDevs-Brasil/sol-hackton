@@ -317,9 +317,6 @@ export function LoginPanel({ note }: { note?: string }) {
       </div>
 
       {account.apiOffline && <p className="dim login-hint">{t.auth.apiOfflineHint}</p>}
-      {!googleReady && !account.apiOffline && (
-        <p className="dim login-hint">{t.auth.googleSetupHint}</p>
-      )}
       {wallet.unavailable && <p className="dim login-hint">{t.auth.noWalletHint}</p>}
       {account.error && <p className="dim login-error">⚠️ {account.error}</p>}
     </div>
