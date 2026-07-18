@@ -5752,8 +5752,11 @@ ol.hilo-steps.hilo-steps-rich {
 
 .intro-splash-skip {
   position: absolute;
-  right: clamp(16px, 4vw, 32px);
-  bottom: clamp(16px, 4vw, 32px);
+  /* soma a margem clamp ao respiro de notch/home-indicator em telas com
+     safe-area (iPhones com câmera em ilha, gesto de home) */
+  right: calc(clamp(16px, 4vw, 32px) + env(safe-area-inset-right, 0px));
+  bottom: calc(clamp(16px, 4vw, 32px) + env(safe-area-inset-bottom, 0px));
+  min-height: 44px;
   padding: 10px 20px;
   border-radius: var(--radius);
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -5774,6 +5777,15 @@ ol.hilo-steps.hilo-steps-rich {
 
 .intro-splash-skip:active {
   transform: scale(0.95);
+}
+
+/* alvo de toque maior no mobile (mínimo recomendado de 44px) e fonte um
+   pouco maior para legibilidade a distância de braço */
+@media (max-width: 640px) {
+  .intro-splash-skip {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
