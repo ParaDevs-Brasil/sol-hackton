@@ -100,7 +100,7 @@ export default function Game() {
       })
       .then((d: GameData) => {
         if (!d.matches || d.matches.length < 2) {
-          throw new Error("Poucas partidas disponíveis");
+          throw new Error("Not enough matches available");
         }
         setData(d);
         setPhase("playing");

@@ -456,7 +456,7 @@ export default function Landing() {
               <div
                 className="hero-media"
                 role="img"
-                aria-label="Prévia do minigame"
+                aria-label="Minigame preview"
               >
                 <video
                   className="hero-media-video"
@@ -472,7 +472,7 @@ export default function Landing() {
               <img
                 className="hero-character"
                 src={heroCharacter}
-                alt="ChainPlay — mascote camaleão"
+                alt="ChainPlay — chameleon mascot"
               />
             </div>
           </div>

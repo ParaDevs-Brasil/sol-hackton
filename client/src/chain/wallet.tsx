@@ -284,22 +284,22 @@ function Bridge({
 function notInstalledMessage(walletName?: string): string {
   const isFirefox = /firefox/i.test(navigator.userAgent);
   const suggestion = isFirefox
-    ? "No Firefox, instale a extensão Solflare (solflare.com) — Phantom e Backpack não têm versão pra Firefox."
-    : "Instale Phantom, Backpack ou Solflare e recarregue a página.";
+    ? "On Firefox, install the Solflare extension (solflare.com) — Phantom and Backpack don't have a Firefox version."
+    : "Install Phantom, Backpack or Solflare and reload the page.";
   const prefix = walletName
-    ? `${walletName} não está instalada neste navegador.`
-    : "Nenhuma wallet Solana encontrada (MetaMask/Freighter não servem — são de outras redes).";
-  return `${prefix} ${suggestion} Sem wallet, dá pra jogar como convidado.`;
+    ? `${walletName} is not installed in this browser.`
+    : "No Solana wallet found (MetaMask/Freighter don't work — they're for other networks).";
+  return `${prefix} ${suggestion} No wallet, you can still play as a guest.`;
 }
 
 function connectErrorMessage(e: { message?: string; name?: string }): string {
   if (e?.name === "WalletNotReadyError") {
-    return "Essa wallet não está instalada neste navegador — instale a extensão e recarregue a página.";
+    return "This wallet is not installed in this browser — install the extension and reload the page.";
   }
   if (/reject|denied|cancel/i.test(`${e?.name} ${e?.message}`)) {
-    return "Conexão recusada na wallet — tente de novo e aprove o popup.";
+    return "Wallet connection rejected — try again and approve the popup.";
   }
-  return e?.message || "Falha ao conectar a wallet.";
+  return e?.message || "Failed to connect wallet.";
 }
 
 export function WalletProvider({ children }: { children: ReactNode }) {

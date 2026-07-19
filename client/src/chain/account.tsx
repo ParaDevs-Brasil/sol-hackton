@@ -206,7 +206,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         );
         return { ...r, bet: "" };
       }
-      throw new Error("conecte a wallet ou faça login primeiro");
+      throw new Error("connect a wallet or log in first");
     },
     [wallet.address, wallet.provider, session]
   );
@@ -221,7 +221,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         await api("/api/custodial/claim", { market, ticketMint, ticketAccount }, session.token);
         return;
       }
-      throw new Error("conecte a wallet ou faça login primeiro");
+      throw new Error("connect a wallet or log in first");
     },
     [wallet.address, wallet.provider, session]
   );

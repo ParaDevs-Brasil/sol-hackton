@@ -159,7 +159,7 @@ export async function placeBet(
   lamports: number,
   gameId?: number
 ): Promise<PlacedBet> {
-  if (!injected.publicKey) throw new Error("wallet não conectada");
+  if (!injected.publicKey) throw new Error("wallet not connected");
   const program = await getProgram(injected);
   const marketId = new BN(marketIdStr);
   const market = marketPda(marketId);
@@ -169,7 +169,7 @@ export async function placeBet(
     // erro cru do buffer-layout ("clo is null") não diz nada pro jogador
     (program.account as any).market.fetch(market).catch(() => {
       throw new Error(
-        "esse mercado é de uma versão antiga do programa e não aceita mais apostas — escolha outro"
+        "this market is from an old version of the program and no longer accepts bets — pick another one"
       );
     }),
   ]);
@@ -185,7 +185,7 @@ export async function placeBet(
     requested !== GAME_NONE &&
     !((marketAcc.allowedGames as number) & (1 << (requested as number)))
   ) {
-    throw new Error("esse jogo não pode apostar neste mercado");
+    throw new Error("this game cannot bet on this market");
   }
   const collection = await collectionAccounts(program, requested, ticketMint.publicKey);
   const effectiveGameId = collection.gameCollection ? requested : GAME_NONE;
@@ -226,7 +226,7 @@ export async function claimTicket(
   ticketMint: string,
   ticketAccount: string
 ): Promise<string> {
-  if (!injected.publicKey) throw new Error("wallet não conectada");
+  if (!injected.publicKey) throw new Error("wallet not connected");
   const program = await getProgram(injected);
   const market = new PublicKey(marketAddress);
   const mint = new PublicKey(ticketMint);
