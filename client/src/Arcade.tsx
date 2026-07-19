@@ -44,7 +44,10 @@ export default function Arcade({ game }: { game: ArcadeGame }) {
   const accountCta = useAccountCta();
   const texts = game === "penalty" ? t.arcade.penalty : t.arcade.live;
   const sess = game === "penalty" ? t.penaltySession : t.liveSession;
-  const [tab, setTab] = useState<"free" | "staked">("free");
+  // penalty é só valendo SOL — o modo grátis (pontos + ranking) ficou no live
+  const [tab, setTab] = useState<"free" | "staked">(
+    game === "penalty" ? "staked" : "free"
+  );
 
   const [event, setEvent] = useState<ArcadeEvent | null>(null);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
@@ -184,8 +187,8 @@ export default function Arcade({ game }: { game: ArcadeGame }) {
         {error && <p className="dim center run-error">⚠️ {error}</p>}
         {!account.address && <LoginPanel note={t.arcade.connectFirst} />}
 
-        {/* penalty e live têm os dois modos (grátis + valendo SOL) */}
-        {account.address && (
+        {/* só o live tem os dois modos (grátis + valendo SOL); penalty vai direto pro staked */}
+        {account.address && game !== "penalty" && (
           <div className="stake-row center-row arcade-tabs">
             <button
               className={`stake-chip ${tab === "free" ? "selected" : ""}`}
@@ -329,11 +332,13 @@ export default function Arcade({ game }: { game: ArcadeGame }) {
 
         <p className="dim devnet-note center">{t.staked.devnetNote}<a className="faucet-link" href="https://faucet.solana.com/" target="_blank" rel="noreferrer">faucet.solana.com</a>.</p>
 
-        <Leaderboard
-          url={`/api/arcade/${game}/leaderboard`}
-          you={account.address}
-          refreshKey={lbKey}
-        />
+        {game !== "penalty" && (
+          <Leaderboard
+            url={`/api/arcade/${game}/leaderboard`}
+            you={account.address}
+            refreshKey={lbKey}
+          />
+        )}
 
         <footer>{t.game.gameFooter}</footer>
       </div>

@@ -882,7 +882,7 @@ const pt = {
     penalty: {
       docTitle: "Penalty Predictor · ChainPlay",
       title: "Penalty Predictor",
-      sub: "Pênalti assinalado! Você tem segundos pra cravar: gol ou defesa? Acertos seguidos multiplicam os pontos.",
+      sub: "Pênalti assinalado! São 8 cobranças: crave gol ou defesa em cada uma. Bata a meta de acertos e a casa paga o prêmio em SOL.",
       event: (home: string, away: string, min: number) =>
         `⚠️ Pênalti para ${home} aos ${min}′ contra ${away}!`,
       optA: "⚽ GOL",
@@ -1008,8 +1008,7 @@ const pt = {
     },
     penalty: {
       steps: [
-        "Modo grátis: pênalti simulado, 8 segundos pra cravar GOL ou DEFESA — defesa é rara e vale mais pontos; acertos seguidos multiplicam.",
-        "Valendo SOL: escolha a meta (6, 7 ou 8 acertos em 8 pênaltis) e o stake, e assine a aposta.",
+        "Escolha a meta (6, 7 ou 8 acertos em 8 pênaltis) e o stake, e assine a aposta.",
         "Responda os 8 pênaltis dentro do timer — estourou o tempo, conta como erro.",
         "Bateu a meta? O mercado liquida on-chain e você resgata o prêmio com o ticket.",
       ],
@@ -1967,7 +1966,7 @@ const en: Dict = {
     penalty: {
       docTitle: "Penalty Predictor · ChainPlay",
       title: "Penalty Predictor",
-      sub: "Penalty awarded! You have seconds to call it: goal or save? Consecutive hits multiply your points.",
+      sub: "Penalty awarded! 8 shots: call goal or save on each. Hit your target and the house pays the prize in SOL.",
       event: (home: string, away: string, min: number) =>
         ` Penalty for ${home} at ${min}′ against ${away}!`,
       optA: " GOAL",
@@ -2093,8 +2092,7 @@ const en: Dict = {
     },
     penalty: {
       steps: [
-        "Free mode: simulated penalty, 8 seconds to call GOAL or SAVE — saves are rare and worth more; consecutive hits multiply.",
-        "Staked: choose the target (6, 7 or 8 hits out of 8 penalties) and stake, and sign the bet.",
+        "Choose the target (6, 7 or 8 hits out of 8 penalties) and stake, and sign the bet.",
         "Answer all 8 penalties within the timer — running out counts as a miss.",
         "Hit the target? The market settles on-chain and you claim the prize with your ticket.",
       ],
